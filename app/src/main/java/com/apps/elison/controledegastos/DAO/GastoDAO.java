@@ -35,12 +35,15 @@ public class GastoDAO {
 
     public List<Gasto> retornarTodos(){
         List<Gasto> gastos = new ArrayList<>();
-        Cursor cursor = gw.getDatabase().rawQuery("SELECT * FROM Compras", null);
+        Cursor cursor = gw.getDatabase().rawQuery("SELECT * FROM Gastos", null);
         while(cursor.moveToNext()){
             int id = cursor.getInt(cursor.getColumnIndex("ID"));
-            String item = cursor.getString(cursor.getColumnIndex("Item"));
-            String quantidade = cursor.getString(cursor.getColumnIndex("Quantidade"));
-            //gastos.add(new Gasto(id, item, quantidade));
+            String categoria = cursor.getString(cursor.getColumnIndex("Categoria"));
+            String nome = cursor.getString(cursor.getColumnIndex("Nome"));
+            String data = cursor.getString(cursor.getColumnIndex("Data"));
+            float valor = cursor.getFloat(cursor.getColumnIndex("Valor"));
+            int imagem = cursor.getInt(cursor.getColumnIndex("Imagem"));
+            gastos.add(new Gasto(id, categoria, nome, data, valor, imagem));
         }
         cursor.close();
         return gastos;
