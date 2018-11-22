@@ -49,23 +49,23 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-//    private void erView.setLayoutManager(layoutManager);
-//         configurarRecycler() {
-//        // Configurando o gerenciador de layout para ser uma lista.
-//        recyclerView = (RecyclerView) findViewById(R.id.main_recyclerViewID);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//
-//        // Adiciona o adapter que recyclirá anexar os objetos à lista.
-//        CompraDAO dao = new CompraDAO(this);
-//        adapter = new GastosAdapter(dao.retornarTodos());
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-//
-//        // Adicionar o arrastar para direita para excluir item
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(addArrastarItem());
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
-//
-//    }
+    private void configurarRecycler() {
+        // Configurando o gerenciador de layout para ser uma lista.
+        recyclerView = (RecyclerView) findViewById(R.id.main_recyclerViewID);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recycl
+        // Adiciona o adapter que irá anexar os objetos à lista.
+        CompraDAO dao = new CompraDAO(this);
+        adapter = new GastosAdapter(dao.retornarTodos());
+        recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
+        // Adicionar o arrastar para direita para excluir item
+        ItemToucerView.setLayoutManager(layoutManager);
+        hHelper itemTouchHelper = new ItemTouchHelper(addArrastarItem());
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+    }
 
     @Override
     public void onBackPressed() {
