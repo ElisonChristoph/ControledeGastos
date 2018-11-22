@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.apps.elison.controledegastos.DAO.GastoDAO;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,19 +53,19 @@ public class MainActivity extends AppCompatActivity
 
     private void configurarRecycler() {
         // Configurando o gerenciador de layout para ser uma lista.
-        recyclerView = (RecyclerView) findViewById(R.id.main_recyclerViewID);
+        recyclerView = (RecyclerView) findViewById(R.id.gastos_recyclerviewID);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recycl
+        recyclerView.setLayoutManager(layoutManager);
+
         // Adiciona o adapter que irá anexar os objetos à lista.
-        CompraDAO dao = new CompraDAO(this);
+        GastoDAO dao = new GastoDAO(this);
         adapter = new GastosAdapter(dao.retornarTodos());
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         // Adicionar o arrastar para direita para excluir item
-        ItemToucerView.setLayoutManager(layoutManager);
-        hHelper itemTouchHelper = new ItemTouchHelper(addArrastarItem());
-        itemTouchHelper.attachToRecyclerView(recyclerView);
+        //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(addArrastarItem());
+       // itemTouchHelper.attachToRecyclerView(recyclerView);
 
     }
 
