@@ -30,8 +30,11 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosHolder> {
 
     @Override
     public void onBindViewHolder(GastosHolder holder, final int position) {
-        //holder.item.setText(gastos.get(position).getItem());
-        //holder.quantidade.setText(gastos.get(position).getQuantidade());
+        holder.categoria.setText(gastos.get(position).getCategoria());
+        holder.nome.setText(gastos.get(position).getNome());
+        holder.data.setText(gastos.get(position).getData());
+        holder.valor.setText(String.valueOf(gastos.get(position).getValor()));
+       // holder.imagem.setImageResource(gastos.get(position).getImagem());
         final long deleteDbID = gastos.get(position).getID();
         final int deleteViewID = holder.getAdapterPosition();
 
@@ -74,8 +77,8 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosHolder> {
         return gastos != null ? gastos.size() : 0;
     }
 
-    public void adicionarCompra(Gasto compra) {
-        gastos.add(compra);
+    public void adicionarCompra(Gasto gasto) {
+        gastos.add(gasto);
         notifyItemInserted(getItemCount());
     }
 

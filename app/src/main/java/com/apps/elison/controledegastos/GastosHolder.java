@@ -2,20 +2,27 @@ package com.apps.elison.controledegastos;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class GastosHolder extends RecyclerView.ViewHolder {
 
 
-    public TextView item;
-    public TextView quantidade;
-    public ImageView btnExcluir;
+    public TextView categoria;
+    public TextView nome;
+    public TextView data;
+    public TextView valor;
+    public ImageView imagem;
+    public ImageButton btnExcluir;
 
     public GastosHolder(View itemView) {
         super(itemView);
-        item = itemView.findViewById(R.id.tv_linha_itemID);
-        quantidade = itemView.findViewById(R.id.tv_linha_quantidadeID);
+        categoria = itemView.findViewById(R.id.tvCategoria);
+        nome = itemView.findViewById(R.id.tvNome);
+        data = itemView.findViewById(R.id.tvData);
+        valor = itemView.findViewById(R.id.tvValor);
+        imagem = itemView.findViewById(R.id.ivLogo);
         btnExcluir = itemView.findViewById(R.id.iv_linha_deleteID);
     }
 }
