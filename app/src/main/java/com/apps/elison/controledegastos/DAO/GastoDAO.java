@@ -50,8 +50,8 @@ public class GastoDAO {
     }
 
     public void recriarTabela(){
-        gw.getDatabase().execSQL("DROP TABLE Compras");
-        gw.getDatabase().execSQL("CREATE TABLE Compras (ID INTEGER PRIMARY KEY AUTOINCREMENT, Item TEXT NOT NULL, Quantidade TEXT)");
+        gw.getDatabase().execSQL("DROP TABLE Gastos");
+        gw.getDatabase().execSQL("CREATE TABLE Gastos (ID INTEGER PRIMARY KEY AUTOINCREMENT, Categoria TEXT NOT NULL, Nome TEXT NOT NULL, Data TEXT NOT NULL, Valor FLOAT NOT NULL, Imagem INTEGER NOT NULL)");
     }
 
 }
