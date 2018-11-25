@@ -10,7 +10,7 @@ public class DB_Conexao extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ListadeGastos.db";
     // Versão do banco - incrementar a cada atualização do banco
     private static final int DATABASE_VERSION = 1;
-    private final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS Compras (ID INTEGER PRIMARY KEY AUTOINCREMENT, Categoria TEXT NOT NULL, Nome TEXT NOT NULL, Data TEXT NOT NULL, Valor FLOAT NOT NULL, Imagem INTEGER NOT NULL);";
+    private final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS Gastos (ID INTEGER PRIMARY KEY AUTOINCREMENT, Categoria TEXT NOT NULL, Nome TEXT NOT NULL, Data TEXT NOT NULL);";
 
     private Context context;
 
@@ -21,6 +21,7 @@ public class DB_Conexao extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(CREATE_TABLE);
     }
 

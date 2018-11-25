@@ -33,8 +33,8 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosHolder> {
         holder.categoria.setText(gastos.get(position).getCategoria());
         holder.nome.setText(gastos.get(position).getNome());
         holder.data.setText(gastos.get(position).getData());
-        holder.valor.setText(String.valueOf(gastos.get(position).getValor()));
-       // holder.imagem.setImageResource(gastos.get(position).getImagem());
+        //holder.valor.setText(String.valueOf(gastos.get(position).getValor()));
+        //holder.imagem.setImageResource(gastos.get(position).getImagem());
         final long deleteDbID = gastos.get(position).getID();
         final int deleteViewID = holder.getAdapterPosition();
 
@@ -77,12 +77,12 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosHolder> {
         return gastos != null ? gastos.size() : 0;
     }
 
-    public void adicionarCompra(Gasto gasto) {
+    public void adicionarGasto(Gasto gasto) {
         gastos.add(gasto);
         notifyItemInserted(getItemCount());
     }
 
-    public void removerCompra(int deleteViewID) {
+    public void removerGasto(int deleteViewID) {
         gastos.remove(deleteViewID);
         notifyItemRemoved(deleteViewID);
         notifyItemRangeChanged(deleteViewID, gastos.size());

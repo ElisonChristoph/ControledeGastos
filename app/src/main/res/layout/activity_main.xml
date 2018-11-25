@@ -13,7 +13,7 @@
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"/>
+        android:visibility="visible"/>
     <!--definir um id para poder acessar no java-->
     <!--Incluir para controle de visibilidade -->
 
@@ -24,7 +24,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"/>
-    <!--Inclui a tela de cadastro-->
+    <!--Inclui a tela de abertura-->
+
+    <include
+        android:id="@+id/gasto_add"
+        layout="@layout/addgasto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"/>
+    <!--Inclui a tela de addgasto-->
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
