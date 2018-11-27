@@ -23,7 +23,7 @@ public class GastosHolder extends RecyclerView.ViewHolder {
         nome = itemView.findViewById(R.id.tvNome);
         data = itemView.findViewById(R.id.tvData);
         valor = itemView.findViewById(R.id.tvValor);
-        //imagem = itemView.findViewById(R.id.ivLogo);
+        imagem = itemView.findViewById(R.id.ivLogo);
         btnExcluir = itemView.findViewById(R.id.iv_linha_deleteID);
     }
 }

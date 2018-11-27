@@ -33,7 +33,7 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosHolder> {
         holder.categoria.setText(gastos.get(position).getCategoria());
         holder.nome.setText(gastos.get(position).getNome());
         holder.data.setText(gastos.get(position).getData());
-        //holder.valor.setText(String.valueOf(gastos.get(position).getValor()));
+        holder.valor.setText(String.valueOf(gastos.get(position).getValor()));
         //holder.imagem.setImageResource(gastos.get(position).getImagem());
         final long deleteDbID = gastos.get(position).getID();
         final int deleteViewID = holder.getAdapterPosition();

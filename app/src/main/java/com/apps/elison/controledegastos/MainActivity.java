@@ -52,10 +52,6 @@ public class MainActivity extends AppCompatActivity
 
     private ConstraintLayout main_layout;
 
-    final int[] pictureArray = {
-            R.drawable.skyicon
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,21 +123,22 @@ public class MainActivity extends AppCompatActivity
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText txtNome = findViewById(R.id.tvNome);
-                EditText txtValor = findViewById(R.id.tvValor);
-                EditText txtCategoria  = findViewById(R.id.tvCategoria);
-                EditText txtData = findViewById(R.id.tvData);
+                TextView txtNome = findViewById(R.id.tvNome);
+                TextView txtValor = findViewById(R.id.tvValor);
+                TextView txtCategoria = findViewById(R.id.tvCategoria);
+                TextView txtData = findViewById(R.id.tvData);
 
                 //pegando os valores
                 String nome = txtNome.getText().toString();
+                int valor = Integer.parseInt(txtValor.getText().toString());
                 String categoria = txtCategoria.getText().toString();
                 String data = txtData.getText().toString();
-                //int valor= Integer.parseInt(txtValor.getText().toString());
+
                 if (nome.equals("")) {
-                    Snackbar.make(view, "Preencha o Nome!", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Preencha o nome!", Snackbar.LENGTH_SHORT).show();
                 } else {
                     //salvando os dados
-                    Gasto gasto = new Gasto(0,categoria,nome,data);
+                    Gasto gasto = new Gasto(0, categoria, nome, data, valor);
                     GastoDAO dao = new GastoDAO(getBaseContext());
                     long salvoID = dao.salvarItem(gasto);
                     if (salvoID != -1) {
@@ -155,11 +152,11 @@ public class MainActivity extends AppCompatActivity
                         gasto.setID(salvoID);
                         adapter.adicionarGasto(gasto);
 
-                        Snackbar.make(view, "Salvo!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(view, "Salvou!", Snackbar.LENGTH_LONG).show();
                         findViewById(R.id.include_main).setVisibility(View.VISIBLE);
                         findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
                     } else {
-                        Snackbar.make(view, "Erro ao salvar Gasto, consulte os logs!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(view, "Erro ao salvarItem, consulte os logs!", Snackbar.LENGTH_LONG).show();
                         findViewById(R.id.include_main).setVisibility(View.VISIBLE);
                         findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
                     }
@@ -341,7 +338,7 @@ public class MainActivity extends AppCompatActivity
                 while ((linhaArquivo = bufferedReader.readLine()) != null) {
                     Log.i("ListadeGastos", linhaArquivo);
                     String info[] = linhaArquivo.split(":");
-                    Gasto item = new Gasto(0, info[0], info[1], info[2]);
+                    Gasto item = new Gasto(0, info[0], info[1], info[2], Integer.parseInt(info[3]));
                     dao.salvarItem(item);
                 }
                 arquivo.close();

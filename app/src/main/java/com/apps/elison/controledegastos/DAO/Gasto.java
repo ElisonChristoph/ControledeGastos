@@ -7,15 +7,14 @@ public class Gasto {
 
     private long ID;
     private String categoria, nome, data;
-    //private int valor;
-    //private int imagem;
+    private int valor;
 
-    public Gasto(long ID, String categoria, String nome, String data) {
+    public Gasto(long ID, String categoria, String nome, String data, int valor) {
         this.ID = ID;
         this.categoria = categoria;
         this.nome = nome;
         this.data = data;
-        //this.valor = valor;
+        this.valor = valor;
         //this.imagem = imagem;
     }
 
@@ -43,6 +42,13 @@ public class Gasto {
         this.nome = nome;
     }
 
+    public int getValor() {
+        return valor;
+    }
+
+    public void setValor(int valor) {
+        this.valor = valor;
+    }
 
     public String getData() {
         return data;
