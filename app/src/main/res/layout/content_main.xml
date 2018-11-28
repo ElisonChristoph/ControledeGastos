@@ -22,7 +22,7 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="@color/colorAccent">
+                android:background="@android:color/holo_blue_dark">
 
                 <Button
                     android:id="@+id/button8"
@@ -159,6 +159,21 @@
                 app:layout_constraintStart_toStartOf="parent">
 
             </android.support.v7.widget.RecyclerView>
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/propaganda" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/zxing_status_text"
+                android:scaleType="fitEnd"
+                app:srcCompat="@drawable/rodape" />
 
         </LinearLayout>
     </ScrollView>
