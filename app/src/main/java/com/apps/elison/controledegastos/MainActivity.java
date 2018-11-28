@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity
         fabSair.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findViewById(R.id.gasto_add).setVisibility(View.VISIBLE);
                 findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
             }
         });
 
@@ -88,14 +88,14 @@ public class MainActivity extends AppCompatActivity
 
         //Menu
 
-//        Button ibAddGasto = (Button) findViewById(R.id.bAddGasto);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
-//               findViewById(R.id.gasto_add).setVisibility(View.VISIBLE);
-//            }
-//        });
+        Button bAddGasto = (Button) findViewById(R.id.bAddGasto2);
+        bAddGasto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+               findViewById(R.id.gasto_add).setVisibility(View.VISIBLE);
+            }
+        });
 
         // Obtem a referência do layout de navegação
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
