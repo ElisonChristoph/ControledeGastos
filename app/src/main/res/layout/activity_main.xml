@@ -34,6 +34,14 @@
         android:visibility="invisible"/>
     <!--Inclui a tela de addgasto-->
 
+    <include
+        android:id="@+id/menu_add"
+        layout="@layout/menu_novo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"/>
+    <!--Inclui a tela de menu-->
+
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

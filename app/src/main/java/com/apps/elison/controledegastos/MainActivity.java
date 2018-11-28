@@ -66,15 +66,36 @@ public class MainActivity extends AppCompatActivity
                 findViewById(R.id.inicio).setVisibility(View.INVISIBLE);
             }
         });
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 findViewById(R.id.include_main).setVisibility(View.INVISIBLE);
-                findViewById(R.id.gasto_add).setVisibility(View.VISIBLE);
+                findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
             }
         });
+
+        FloatingActionButton fabSair = (FloatingActionButton) findViewById(R.id.fabSair);
+        fabSair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.gasto_add).setVisibility(View.VISIBLE);
+                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+
+        //Menu
+
+//        Button ibAddGasto = (Button) findViewById(R.id.bAddGasto);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+//               findViewById(R.id.gasto_add).setVisibility(View.VISIBLE);
+//            }
+//        });
 
         // Obtem a referência do layout de navegação
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -105,7 +126,7 @@ public class MainActivity extends AppCompatActivity
         btnCancelar.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+                findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
                 findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
             }
         });
@@ -153,11 +174,11 @@ public class MainActivity extends AppCompatActivity
                         adapter.adicionarGasto(gasto);
 
                         Snackbar.make(view, "Salvou!", Snackbar.LENGTH_LONG).show();
-                        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+                        findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
                         findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
                     } else {
                         Snackbar.make(view, "Erro ao salvarItem, consulte os logs!", Snackbar.LENGTH_LONG).show();
-                        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+                        findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
                         findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
                     }
                 }
