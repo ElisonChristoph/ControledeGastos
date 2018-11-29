@@ -145,13 +145,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 TextView txtNome = findViewById(R.id.tvNome);
-                TextView txtValor = findViewById(R.id.tvValor);
+                TextView txtValor = findViewById(R.id.nValor);
                 TextView txtCategoria = findViewById(R.id.tvCategoria);
-                TextView txtData = findViewById(R.id.tvData);
+                TextView txtData = findViewById(R.id.dData);
 
                 //pegando os valores
                 String nome = txtNome.getText().toString();
-                int valor = Integer.parseInt(txtValor.getText().toString());
+                float valor = Float.parseFloat(txtValor.getText().toString());
                 String categoria = txtCategoria.getText().toString();
                 String data = txtData.getText().toString();
 
@@ -231,6 +231,7 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -359,7 +360,7 @@ public class MainActivity extends AppCompatActivity
                 while ((linhaArquivo = bufferedReader.readLine()) != null) {
                     Log.i("ListadeGastos", linhaArquivo);
                     String info[] = linhaArquivo.split(":");
-                    Gasto item = new Gasto(0, info[0], info[1], info[2], Integer.parseInt(info[3]));
+                    Gasto item = new Gasto(0, info[0], info[1], info[2], Float.parseFloat(info[3]));
                     dao.salvarItem(item);
                 }
                 arquivo.close();

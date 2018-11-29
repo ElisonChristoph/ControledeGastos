@@ -7,9 +7,9 @@ public class Gasto {
 
     private long ID;
     private String categoria, nome, data;
-    private int valor;
+    private float valor;
 
-    public Gasto(long ID, String categoria, String nome, String data, int valor) {
+    public Gasto(long ID, String categoria, String nome, String data, float valor) {
         this.ID = ID;
         this.categoria = categoria;
         this.nome = nome;
@@ -42,7 +42,7 @@ public class Gasto {
         this.nome = nome;
     }
 
-    public int getValor() {
+    public float getValor() {
         return valor;
     }
 

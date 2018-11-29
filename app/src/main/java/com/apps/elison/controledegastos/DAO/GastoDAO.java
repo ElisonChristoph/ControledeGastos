@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GastoDAO {
@@ -41,7 +42,7 @@ public class GastoDAO {
             String categoria = cursor.getString(cursor.getColumnIndex("Categoria"));
             String nome = cursor.getString(cursor.getColumnIndex("Nome"));
             String data = cursor.getString(cursor.getColumnIndex("Data"));
-            int valor = cursor.getInt(cursor.getColumnIndex("Valor"));
+            float valor = cursor.getFloat(cursor.getColumnIndex("Valor"));
             //int imagem = cursor.getInt(cursor.getColumnIndex("Imagem"));
             gastos.add(new Gasto(id, categoria, nome, data, valor));
         }
@@ -51,7 +52,7 @@ public class GastoDAO {
 
     public void recriarTabela(){
         gw.getDatabase().execSQL("DROP TABLE Gastos");
-        gw.getDatabase().execSQL("CREATE TABLE Gastos (ID INTEGER PRIMARY KEY AUTOINCREMENT, Categoria TEXT NOT NULL, Nome TEXT NOT NULL, Data TEXT NOT NULL, Valor INTEGER NOT NULL)");
+        gw.getDatabase().execSQL("CREATE TABLE Gastos (ID INTEGER PRIMARY KEY AUTOINCREMENT, Categoria TEXT NOT NULL, Nome TEXT NOT NULL, Data TEXT NOT NULL, Valor DECIMAL NOT NULL)");
     }
 
 }
