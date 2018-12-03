@@ -97,6 +97,24 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        Button bAddCredito  = (Button) findViewById(R.id.bAddCredito);
+        bAddCredito.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+                findViewById(R.id.addcredito).setVisibility(View.VISIBLE);
+            }
+        });
+
+        Button bCadastro = (Button) findViewById(R.id.bCadastro);
+        bCadastro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+                findViewById(R.id.cadastro).setVisibility(View.VISIBLE);
+            }
+        });
+
         // Obtem a referência do layout de navegação
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);

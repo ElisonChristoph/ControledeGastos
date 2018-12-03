@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/zxing_custom_viewfinder_mask">
+    android:background="@color/zxing_status_text">
 
     <ImageView
         android:id="@+id/iv_linha_deleteID"
@@ -38,27 +38,28 @@
     <TextView
         android:id="@+id/tvNome"
         android:layout_width="211dp"
-        android:layout_height="20dp"
+        android:layout_height="27dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="SKY HDTV"
         android:textAlignment="center"
         android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/ivLogo"
         app:layout_constraintTop_toBottomOf="@+id/tvCategoria" />
 
     <TextView
         android:id="@+id/tvData"
-        android:layout_width="92dp"
-        android:layout_height="21dp"
+        android:layout_width="117dp"
+        android:layout_height="29dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="15/11/18"
         android:textAlignment="center"
         android:textColor="@color/design_default_color_primary"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ivLogo"
@@ -67,15 +68,15 @@
 
     <TextView
         android:id="@+id/tvValor"
-        android:layout_width="113dp"
-        android:layout_height="21dp"
+        android:layout_width="143dp"
+        android:layout_height="28dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="254,89 R$"
         android:textAlignment="center"
         android:textColor="@color/colorAccent"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvData"
@@ -92,11 +93,11 @@
         android:layout_marginBottom="8dp"
         android:background="?attr/actionBarDivider"
         android:contentDescription="TODO"
-        android:scaleType="centerInside"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvCategoria"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icons" />
+        app:srcCompat="@mipmap/ic_launcher_round" />
 
 </android.support.constraint.ConstraintLayout>
