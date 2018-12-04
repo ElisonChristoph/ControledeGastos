@@ -28,12 +28,18 @@ import android.widget.Toast;
 
 import com.apps.elison.controledegastos.DAO.Gasto;
 import com.apps.elison.controledegastos.DAO.GastoDAO;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -205,6 +211,27 @@ public class MainActivity extends AppCompatActivity
 
 
         configurarRecycler();
+
+        //configuração grafico
+
+        setupPieChart();
+    }
+
+    //metodo set do grafico
+    private void setupPieChart() {
+        List<PieEntry> entries = new ArrayList<>();
+
+        entries.add(new PieEntry(18.5f, "Alimentação"));
+        entries.add(new PieEntry(26.7f, "TV/Internet"));
+        entries.add(new PieEntry(24.0f, "Combustível"));
+        entries.add(new PieEntry(30.8f, "Outros"));
+
+        PieDataSet set = new PieDataSet(entries, "Gastos");
+        set.setColors(ColorTemplate.COLORFUL_COLORS);
+        PieData data = new PieData(set);
+        PieChart chart = (PieChart) findViewById(R.id.chart);
+        chart.setData(data);
+        chart.invalidate(); // refresh
     }
 
     private void configurarRecycler() {
