@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,13 +23,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.EditText;
+import java.text.SimpleDateFormat;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apps.elison.controledegastos.DAO.Gasto;
 import com.apps.elison.controledegastos.DAO.GastoDAO;
+import com.apps.elison.controledegastos.DAO.Mes;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -39,6 +42,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +54,10 @@ public class MainActivity extends AppCompatActivity
     private static final int Activity_DADOS_PESSOAIS = 10;
 
     private RecyclerView recyclerView;
+    private RecyclerView recyclerViewMeses;
     private GastosAdapter adapter;
+    private MesAdapter adaptermes;
+    List<Mes> mesList = new ArrayList<>();
 
     private TextView seu_nome;
     private TextView seu_email;
@@ -58,11 +66,66 @@ public class MainActivity extends AppCompatActivity
 
     private ConstraintLayout main_layout;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         main_layout = findViewById(R.id.main_layoutID);
+
+        //configuração dos meses
+
+        final int[] mesesButtonArray = {
+                1,2,3,4,5,6,7,8,9,
+                R.drawable.outubro,
+                R.drawable.novembro,
+                R.drawable.dezembro
+
+        };
+
+        recyclerViewMeses = findViewById(R.id.meses_recyclerviewID);
+        recyclerViewMeses.setHasFixedSize(true);
+
+        mesList.add(new Mes(1,"Janeiro", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(2,"Fevereiro", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(3,"Março", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(4,"Abril", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(5,"Maio", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(6,"Junho", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(7,"Julho", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(8,"Agosto", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(9,"Setembro", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(10,"Outubro", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(11,"Novembro", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(12,"Dezembro", 0, 0,0,R.drawable.calendario));
+
+        recyclerViewMeses.setAdapter(new MesAdapter(mesList, this));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerViewMeses.setLayoutManager(linearLayoutManager);
+
+        //Botão meses
+        ImageButton bMeses = (ImageButton) findViewById(R.id.bmeses);
+        bMeses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.meses).setVisibility(View.VISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.INVISIBLE);
+            }
+        });
+
+
+        // -- // -- // -- // -- // -- //
+
+        //Obter data
+
+        // data/hora atual
+        LocalDateTime agora = LocalDateTime.now();
+        int mes = (agora.getMonthValue()) -1 ;
+
+        bMeses.setImageResource(mesesButtonArray[mes]);
+
+        // -- // -- // -- // -- // -- //
 
         ImageButton btnEntrar = (ImageButton) findViewById(R.id.bentrar);
         btnEntrar.setOnClickListener(new Button.OnClickListener() {
@@ -215,7 +278,24 @@ public class MainActivity extends AppCompatActivity
         //configuração grafico
 
         setupPieChart();
+
+//        //configurar meses
+//
+//        List<Mes> mesesList = new ArrayList<>();
+//
+//        recyclerView = findViewById(R.id.meses_recyclerviewID);
+//        recyclerView.setHasFixedSize(true);
+//
+//        mesesList.add(new Mes(11,"Novembro",1250,200,800));
+//        mesesList.add(new Mes(12,"Dezembro",1260,300,700));
+//
+//
+//        recyclerView.setAdapter(new MesAdapter(mesesList,this));
+//
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(linearLayoutManager);
     }
+
 
     //metodo set do grafico
     private void setupPieChart() {
@@ -253,6 +333,25 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+
+//    private void configurarRecyclerMeses() {
+//        // Configurando o gerenciador de layout para ser uma lista.
+//        recyclerViewMeses = (RecyclerView) findViewById(R.id.meses_recyclerviewID);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//        recyclerViewMeses.setLayoutManager(layoutManager);
+//
+//        // Adiciona o adapter que irá anexar os objetos à lista.
+//        GastoDAO dao = new GastoDAO(this);
+//        adaptermes = new MesAdapter(dao.retornarTodos());
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+//
+//        // Adicionar o arrastar para direita para excluir item
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(addArrastarItem());
+//        itemTouchHelper.attachToRecyclerView(recyclerView);
+//
+//    }
+
     // Recebendo retorno de activity chamadas
     protected void onActivityResult(int codigo, int resultado, Intent i) {
 
@@ -269,12 +368,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+
+        if((findViewById(R.id.meses).getVisibility()) == View.VISIBLE)
+        findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+        if((findViewById(R.id.menu_add).getVisibility()) == View.VISIBLE)
+            findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
     }
 
 
