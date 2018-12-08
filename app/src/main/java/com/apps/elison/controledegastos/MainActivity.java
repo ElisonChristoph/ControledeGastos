@@ -279,21 +279,6 @@ public class MainActivity extends AppCompatActivity
 
         setupPieChart();
 
-//        //configurar meses
-//
-//        List<Mes> mesesList = new ArrayList<>();
-//
-//        recyclerView = findViewById(R.id.meses_recyclerviewID);
-//        recyclerView.setHasFixedSize(true);
-//
-//        mesesList.add(new Mes(11,"Novembro",1250,200,800));
-//        mesesList.add(new Mes(12,"Dezembro",1260,300,700));
-//
-//
-//        recyclerView.setAdapter(new MesAdapter(mesesList,this));
-//
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        recyclerView.setLayoutManager(linearLayoutManager);
     }
 
 
@@ -332,25 +317,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-
-
-//    private void configurarRecyclerMeses() {
-//        // Configurando o gerenciador de layout para ser uma lista.
-//        recyclerViewMeses = (RecyclerView) findViewById(R.id.meses_recyclerviewID);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        recyclerViewMeses.setLayoutManager(layoutManager);
-//
-//        // Adiciona o adapter que irá anexar os objetos à lista.
-//        GastoDAO dao = new GastoDAO(this);
-//        adaptermes = new MesAdapter(dao.retornarTodos());
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-//
-//        // Adicionar o arrastar para direita para excluir item
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(addArrastarItem());
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
-//
-//    }
 
     // Recebendo retorno de activity chamadas
     protected void onActivityResult(int codigo, int resultado, Intent i) {
