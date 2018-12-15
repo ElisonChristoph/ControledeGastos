@@ -10,7 +10,7 @@ public class DB_Conexao extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ListadeGastos.db";
     // Versão do banco - incrementar a cada atualização do banco
     private static final int DATABASE_VERSION = 1;
-    private final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS Gastos (ID INTEGER PRIMARY KEY AUTOINCREMENT, Categoria TEXT NOT NULL, Nome TEXT NOT NULL, Data TEXT NOT NULL, Valor DECIMAL NOT NULL);";
+    private final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS Gastos (ID INTEGER PRIMARY KEY AUTOINCREMENT, Categoria TEXT NOT NULL, Nome TEXT NOT NULL, Data DATE NOT NULL, Valor DECIMAL NOT NULL);";
 
     private Context context;
 

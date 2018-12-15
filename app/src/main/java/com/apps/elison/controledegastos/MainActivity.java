@@ -1,5 +1,6 @@
 package com.apps.elison.controledegastos;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,10 +24,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Button;
-import java.text.SimpleDateFormat;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
+import android.widget.DatePicker;
+import java.util.Calendar;
 
 import com.apps.elison.controledegastos.DAO.Gasto;
 import com.apps.elison.controledegastos.DAO.GastoDAO;
@@ -43,8 +50,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -59,6 +66,13 @@ public class MainActivity extends AppCompatActivity
     private MesAdapter adaptermes;
     List<Mes> mesList = new ArrayList<>();
 
+    private static TextView txtData;
+    private static int Ano;
+    private static int Mes;
+    private static int Dia;
+    private int Hora;
+    private int Minuto;
+
     private TextView seu_nome;
     private TextView seu_email;
     private SharedPreferences pref;
@@ -72,6 +86,26 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         main_layout = findViewById(R.id.main_layoutID);
+
+        InicializaListeners();
+        txtData.setEnabled(false);
+
+        ImageButton ibEditarData = (ImageButton) findViewById(R.id.ibEditarData);
+        ibEditarData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MostrarData();
+            }
+        });
+
+        final Calendar cal = Calendar.getInstance();
+        Ano = cal.get(Calendar.YEAR);
+        Mes = cal.get(Calendar.MONTH);
+        Dia = cal.get(Calendar.DAY_OF_MONTH);
+        Hora = cal.get(Calendar.HOUR);
+        Minuto = cal.get(Calendar.MINUTE);
+
+        AtualizarData();
 
         //configuração dos meses
 
@@ -109,8 +143,8 @@ public class MainActivity extends AppCompatActivity
         bMeses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findViewById(R.id.meses).setVisibility(View.VISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.INVISIBLE);
+                findViewById(R.id.meses).setVisibility(View.VISIBLE);
             }
         });
 
@@ -234,7 +268,7 @@ public class MainActivity extends AppCompatActivity
                 TextView txtNome = findViewById(R.id.tvNome);
                 TextView txtValor = findViewById(R.id.nValor);
                 TextView txtCategoria = findViewById(R.id.tvCategoria);
-                TextView txtData = findViewById(R.id.dData);
+                TextView txtData = findViewById(R.id.txtData);
 
                 //pegando os valores
                 String nome = txtNome.getText().toString();
@@ -297,6 +331,56 @@ public class MainActivity extends AppCompatActivity
         PieChart chart = (PieChart) findViewById(R.id.chart);
         chart.setData(data);
         chart.invalidate(); // refresh
+    }
+
+    public void InicializaListeners()
+    {
+        txtData = (TextView) findViewById(R.id.txtData);
+    }
+
+    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
+    {
+        @Override
+        public Dialog onCreateDialog(Bundle      savedInstanceState)
+        {
+            final Calendar calendario = Calendar.getInstance();
+            Ano = calendario.get(Calendar.YEAR);
+            Mes = calendario.get(Calendar.MONTH);
+            Dia = calendario.get(Calendar.DAY_OF_MONTH);
+            return new DatePickerDialog(getActivity(), this, Ano, Mes, Dia);
+        }
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int day)
+        {
+            Ano = year;
+            Mes = month;
+            Dia = day;
+            AtualizarData();
+            //MensagemData();
+        }
+
+        @Override
+        public int show(FragmentTransaction transaction, String tag)
+        {
+            return super.show(transaction, tag);
+        }
+    }
+
+    private static void AtualizarData()
+    {
+        txtData.setText(new StringBuilder().append(Dia).append("/").append(Mes + 1).append("/").append(Ano).append(" "));
+    }
+
+//    private static void MensagemData()
+//    {
+//        Toast.makeText(this, new StringBuilder().append("Data: ").append(txtData.getText()),  Toast.LENGTH_SHORT).show();
+//    }
+
+    public void MostrarData()
+    {
+        DialogFragment ClasseData = new  DatePickerFragment();
+        ClasseData.show(getFragmentManager(),  "datepicker");
     }
 
     private void configurarRecycler() {
