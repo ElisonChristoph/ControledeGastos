@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         main_layout = findViewById(R.id.main_layoutID);
 
+        // -- // -- // -- // -- // -- //
+
         InicializaListeners();
         txtData.setEnabled(false);
 
@@ -107,6 +109,10 @@ public class MainActivity extends AppCompatActivity
 
         AtualizarData();
 
+        // data/hora atual
+        int mes = (cal.get(Calendar.MONTH)) ;
+
+
         //configuração dos meses
 
         final int[] mesesButtonArray = {
@@ -116,6 +122,8 @@ public class MainActivity extends AppCompatActivity
                 R.drawable.dezembro
 
         };
+
+        // -- // -- // -- // -- // -- //
 
         recyclerViewMeses = findViewById(R.id.meses_recyclerviewID);
         recyclerViewMeses.setHasFixedSize(true);
@@ -138,6 +146,8 @@ public class MainActivity extends AppCompatActivity
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerViewMeses.setLayoutManager(linearLayoutManager);
 
+        // -- // -- // -- // -- // -- //
+
         //Botão meses
         ImageButton bMeses = (ImageButton) findViewById(R.id.bmeses);
         bMeses.setOnClickListener(new View.OnClickListener() {
@@ -148,16 +158,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-        // -- // -- // -- // -- // -- //
-
-        //Obter data
-
-        // data/hora atual
-        LocalDateTime agora = LocalDateTime.now();
-        int mes = (agora.getMonthValue()) -1 ;
-
         bMeses.setImageResource(mesesButtonArray[mes]);
+
 
         // -- // -- // -- // -- // -- //
 
@@ -187,7 +189,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
+        // -- // -- // -- // -- // -- //
 
         //Menu
 
@@ -217,6 +219,8 @@ public class MainActivity extends AppCompatActivity
                 findViewById(R.id.cadastro).setVisibility(View.VISIBLE);
             }
         });
+
+        // -- // -- // -- // -- // -- //
 
         // Obtem a referência do layout de navegação
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
