@@ -6,10 +6,11 @@ public class Gasto {
 
 
     private long ID;
-    private String categoria, nome, data;
-    private float valor;
+    private String categoria, nome;
+    private String data;
+    private String valor;
 
-    public Gasto(long ID, String categoria, String nome, String data, float valor) {
+    public Gasto(long ID, String categoria, String nome, String data, String valor) {
         this.ID = ID;
         this.categoria = categoria;
         this.nome = nome;
@@ -42,11 +43,11 @@ public class Gasto {
         this.nome = nome;
     }
 
-    public float getValor() {
+    public String getValor() {
         return valor;
     }
 
-    public void setValor(int valor) {
+    public void setValor(String valor) {
         this.valor = valor;
     }
 

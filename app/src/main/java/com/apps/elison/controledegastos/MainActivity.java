@@ -25,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MesAdapter adaptermes;
     List<Mes> mesList = new ArrayList<>();
 
-    private static TextView txtData;
+    private static EditText txtData;
     private static int Ano;
     private static int Mes;
     private static int Dia;
@@ -98,9 +99,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String qrdata;
     String qrvalor;
 
-    TextView tvnome;
-    TextView tvdata;
-    TextView tvvalor;
+    EditText tvnome;
+    EditText tvdata;
+    EditText tvvalor;
 
     private ConstraintLayout main_layout;
 
@@ -116,9 +117,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         bScan =  (ImageButton) findViewById(R.id.bScan);
 
-        tvnome = (TextView) findViewById(R.id.tvNome);
-        tvdata = (TextView) findViewById(R.id.txtData);
-        tvvalor = (TextView) findViewById(R.id.tvValor);
+        tvnome = (EditText) findViewById(R.id.tvNome);
+        tvdata = (EditText) findViewById(R.id.txtData);
+        tvvalor = (EditText) findViewById(R.id.tvValor);
 
         final Activity activity = this;
 
@@ -193,7 +194,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerViewMeses.setLayoutManager(linearLayoutManager);
+
+        //Metodo para buscar e apresentar os gastos
         //-------------------------------------------------------------------------------------------------------
+
+
 
         //----------------------------------------------------------------------------------------------------
 
@@ -253,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //--------------------------------------------------------------------------------------
 
     @Override
-    public void onClick(View v){
+    public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bmeses:
                 findViewById(R.id.include_main).setVisibility(View.INVISIBLE);
@@ -298,41 +303,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_salvarID:
 
-                TextView txtNome = findViewById(R.id.tvNome);
-                TextView txtValor = findViewById(R.id.tvValor);
-                TextView txtCategoria = findViewById(R.id.tvCategoria);
-                TextView txtData = findViewById(R.id.txtData);
+                EditText txtNome = findViewById(R.id.tvNome);
+                EditText txtValor = findViewById(R.id.tvValor);
+                EditText txtCategoria = findViewById(R.id.tvCategoria);
+                EditText txtData = findViewById(R.id.txtData);
 
                 //pegando os valores
-                String nome = txtNome.getText().toString();
-                float valor = Float.parseFloat(txtValor.getText().toString());
-                String categoria = txtCategoria.getText().toString();
-                String data = txtData.getText().toString();
+                String nomegasto = txtNome.getText().toString();
+                String valorgasto = txtValor.getText().toString();
+                String datagasto = txtData.getText().toString();
+                String categoriagasto = txtCategoria.getText().toString();
 
-                if (nome.equals("")) {
-                    Snackbar.make(v, "Preencha o nome!", Snackbar.LENGTH_SHORT).show();
+                if (nomegasto.equals("")) {
+                    Snackbar.make(v, "Preencha o Nome!", Snackbar.LENGTH_SHORT).show();
+                    if (valorgasto.equals("")) {
+                        Snackbar.make(v, "Preencha o Valor!", Snackbar.LENGTH_SHORT).show();
+                    }
+                    if (datagasto.equals("")) {
+                        Snackbar.make(v, "Selecione a Data!", Snackbar.LENGTH_SHORT).show();
+                    }
+                    if (categoriagasto.equals("")) {
+                        Snackbar.make(v, "Preencha a Categoria!", Snackbar.LENGTH_SHORT).show();
+                    }
                 } else {
                     //salvando os dados
-                    Gasto gasto = new Gasto(0, categoria, nome, data, valor);
+                    Gasto gasto = new Gasto(0, categoriagasto, nomegasto, datagasto, valorgasto);
                     GastoDAO dao = new GastoDAO(getBaseContext());
                     long salvoID = dao.salvarItem(gasto);
                     if (salvoID != -1) {
                         //limpa os campos
-                        txtNome.setText("");
+                        //txtNome.setText("");
                         txtValor.setText("");
                         txtCategoria.setText("");
-                        txtData.setText("");
 
                         //adiciona no recyclerView
                         gasto.setID(salvoID);
                         adapter.adicionarGasto(gasto);
 
-                        Snackbar.make(v, "Salvou!", Snackbar.LENGTH_LONG).show();
-                        findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
+                        Snackbar.make(v, "Salvo com Sucesso!", Snackbar.LENGTH_LONG).show();
+                        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
                         findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
                     } else {
                         Snackbar.make(v, "Erro ao salvarItem, consulte os logs!", Snackbar.LENGTH_LONG).show();
-                        findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
+                        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
                         findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
                     }
                 }
@@ -420,7 +433,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void InicializaListeners()
     {
-        txtData = (TextView) findViewById(R.id.txtData);
+        txtData = (EditText) findViewById(R.id.txtData);
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
@@ -590,9 +603,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String texto = "";
         GastoDAO dao = new GastoDAO(this);
-        List<Gasto> compras = dao.retornarTodos();
-        for (Gasto item : compras) {
-            texto = texto + item.getNome() + ":" + item.getData() + ":" + item.getCategoria() + "\n";
+        List<Gasto> gastos = dao.retornarTodos();
+        for (Gasto gasto : gastos) {
+            texto = texto + gasto.getCategoria() + ":" + gasto.getNome() + ":" + gasto.getData() + ":" + gasto.getValor() + "\n";
 
         }
         Log.w("Texto",texto);
@@ -628,7 +641,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 while ((linhaArquivo = bufferedReader.readLine()) != null) {
                     Log.i("ListadeGastos", linhaArquivo);
                     String info[] = linhaArquivo.split(":");
-                    Gasto item = new Gasto(0, info[0], info[1], info[2], Float.parseFloat(info[3]));
+                    Gasto item = new Gasto(0, info[0], info[1], info[2], info[3]);
                     dao.salvarItem(item);
                 }
                 arquivo.close();
