@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 1,2,3,4,5,6,7,8,9,
                 R.drawable.outubro,
                 R.drawable.novembro,
-                R.drawable.dezembro
+                R.drawable.ic_dezembro
 
         };
 
