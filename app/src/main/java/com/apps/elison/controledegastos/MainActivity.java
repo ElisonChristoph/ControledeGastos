@@ -24,9 +24,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,12 +81,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MesAdapter adaptermes;
     List<Mes> mesList = new ArrayList<>();
 
+    private String array_spinner[];
+
     private static EditText txtData;
     private static int Ano;
     private static int Mes;
     private static int Dia;
     private int Hora;
     private int Minuto;
+
+    Spinner categoria;
 
     private TextView seu_nome;
     private TextView seu_email;
@@ -111,6 +117,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         main_layout = findViewById(R.id.main_layoutID);
+
+        array_spinner=new String[4];
+        array_spinner[0]="ENTRETERIMENTO";
+        array_spinner[1]="ALIMENTAÇÃO";
+        array_spinner[2]="TRANSPORTE";
+        array_spinner[3]="GASTOS MENSAIS";
+        categoria = (Spinner) findViewById(R.id.sCategoria);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                this,R.layout.spinner_item,array_spinner);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        categoria.setAdapter(spinnerArrayAdapter);
 
         //Leitor do QRCODE
         //---------------------------------------------------------------------------
@@ -305,14 +322,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 EditText txtNome = findViewById(R.id.tvNome);
                 EditText txtValor = findViewById(R.id.tvValor);
-                EditText txtCategoria = findViewById(R.id.tvCategoria);
+
+
+               // EditText txtCategoria = findViewById(R.id.tvCategoria);
                 EditText txtData = findViewById(R.id.txtData);
 
                 //pegando os valores
                 String nomegasto = txtNome.getText().toString();
                 String valorgasto = txtValor.getText().toString();
                 String datagasto = txtData.getText().toString();
-                String categoriagasto = txtCategoria.getText().toString();
+                String categoriagasto = (String) categoria.getSelectedItem();
 
                 if (nomegasto.equals("")) {
                     Snackbar.make(v, "Preencha o Nome!", Snackbar.LENGTH_SHORT).show();
@@ -334,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //limpa os campos
                         //txtNome.setText("");
                         txtValor.setText("");
-                        txtCategoria.setText("");
+                       // txtCategoria.setText("");
 
                         //adiciona no recyclerView
                         gasto.setID(salvoID);
