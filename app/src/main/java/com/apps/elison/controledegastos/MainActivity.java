@@ -475,7 +475,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static void AtualizarData()
     {
-        txtData.setText(new StringBuilder().append(Dia).append("/").append(Mes + 1).append("/").append(Ano).append(" "));
+        if (Dia<10 && Mes <10){
+            txtData.setText(new StringBuilder().append("0").append(Dia).append("/").append("0").append(Mes).append("/").append(Ano).append(" "));
+        }else if (Dia<10 && Mes >=10){
+            txtData.setText(new StringBuilder().append("0").append(Dia).append("/").append(Mes).append("/").append(Ano).append(" "));
+        }else if (Dia>=10 && Mes <10){
+            txtData.setText(new StringBuilder().append(Dia).append("/").append("0").append(Mes).append("/").append(Ano).append(" "));
+        } else {
+            txtData.setText(new StringBuilder().append(Dia).append("/").append(Mes).append("/").append(Ano).append(" "));
+        }
+
     }
 
 //    private static void MensagemData()
