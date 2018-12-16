@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -66,8 +67,7 @@ import android.widget.TextView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener ,NavigationView.OnNavigationItemSelectedListener {
 
     private static final String NOME_ARQUIVO = "arquivo_gastos.txt";
     private static final int Activity_DADOS_PESSOAIS = 10;
@@ -90,7 +90,10 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
-    ImageButton bScan ;
+    private Button bAddGasto, bAddCredito, bCadastro, btnCancelar, btnSalvar, btnLimpar;
+    private ImageButton bMeses, btnEntrar, bScan;
+    private FloatingActionButton fab, fabSair;
+
     String qrnome;
     String qrdata;
     String qrvalor;
@@ -108,9 +111,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         main_layout = findViewById(R.id.main_layoutID);
 
-        // - // -- // -- // -- // -- //
-
-        //LER QRCODE
+        //Leitor do QRCODE
+        //---------------------------------------------------------------------------
 
         bScan =  (ImageButton) findViewById(R.id.bScan);
 
@@ -134,8 +136,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        // -- // -- // -- // -- // -- //
-
+        // Busca da data para apresentação dos gastos do mes atual
+        //------------------------------------------------------------------------
         InicializaListeners();
         txtData.setEnabled(false);
 
@@ -170,8 +172,7 @@ public class MainActivity extends AppCompatActivity
 
         };
 
-        // -- // -- // -- // -- // -- //
-
+        //recyclerview dos meses
         recyclerViewMeses = findViewById(R.id.meses_recyclerviewID);
         recyclerViewMeses.setHasFixedSize(true);
 
@@ -192,82 +193,9 @@ public class MainActivity extends AppCompatActivity
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerViewMeses.setLayoutManager(linearLayoutManager);
+        //-------------------------------------------------------------------------------------------------------
 
-        // -- // -- // -- // -- // -- //
-
-        //Botão meses
-        ImageButton bMeses = (ImageButton) findViewById(R.id.bmeses);
-        bMeses.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findViewById(R.id.include_main).setVisibility(View.INVISIBLE);
-                findViewById(R.id.meses).setVisibility(View.VISIBLE);
-            }
-        });
-
-        bMeses.setImageResource(mesesButtonArray[mes]);
-
-
-        // -- // -- // -- // -- // -- //
-
-        ImageButton btnEntrar = (ImageButton) findViewById(R.id.bentrar);
-        btnEntrar.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
-                findViewById(R.id.inicio).setVisibility(View.INVISIBLE);
-            }
-        });
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findViewById(R.id.include_main).setVisibility(View.INVISIBLE);
-                findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
-            }
-        });
-
-        FloatingActionButton fabSair = (FloatingActionButton) findViewById(R.id.fabSair);
-        fabSair.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
-                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
-            }
-        });
-
-        // -- // -- // -- // -- // -- //
-
-        //Menu
-
-        Button bAddGasto = (Button) findViewById(R.id.bAddGasto2);
-        bAddGasto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
-               findViewById(R.id.gasto_add).setVisibility(View.VISIBLE);
-            }
-        });
-
-        Button bAddCredito  = (Button) findViewById(R.id.bAddCredito);
-        bAddCredito.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
-                findViewById(R.id.addcredito).setVisibility(View.VISIBLE);
-            }
-        });
-
-        Button bCadastro = (Button) findViewById(R.id.bCadastro);
-        bCadastro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
-                findViewById(R.id.cadastro).setVisibility(View.VISIBLE);
-            }
-        });
-
-        // -- // -- // -- // -- // -- //
+        //----------------------------------------------------------------------------------------------------
 
         // Obtem a referência do layout de navegação
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -292,30 +220,84 @@ public class MainActivity extends AppCompatActivity
             seu_email.setText("sem email");
         }
 
+        configurarRecycler();
 
-        //        Botões de Incluir/Cancelar/Limpar
-        Button btnCancelar = (Button) findViewById(R.id.btn_cancelarID);
-        btnCancelar.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //configuração grafico
+
+        setupPieChart();
+
+        //Configuração dos Buttons
+        //-------------------------------------------------------------------------------------------------------
+
+        bMeses = (ImageButton) findViewById(R.id.bmeses);
+        bMeses.setImageResource(mesesButtonArray[mes]);
+        bMeses.setOnClickListener(this);
+        btnEntrar = (ImageButton) findViewById(R.id.bentrar);
+        btnEntrar.setOnClickListener(this);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+        fabSair = (FloatingActionButton) findViewById(R.id.fabSair);
+        fabSair.setOnClickListener(this);
+        bAddGasto = (Button) findViewById(R.id.bAddGasto2);
+        bAddGasto.setOnClickListener(this);
+        bAddCredito  = (Button) findViewById(R.id.bAddCredito);
+        bAddCredito.setOnClickListener(this);
+        btnCancelar = (Button) findViewById(R.id.btn_cancelarID);
+        btnCancelar.setOnClickListener(this);
+        btnLimpar = (Button) findViewById(R.id.btn_limparID);
+        btnLimpar.setOnClickListener(this);
+        btnSalvar = (Button) findViewById(R.id.btn_salvarID);
+        btnSalvar.setOnClickListener(this);
+    }
+    // Click Listeners
+    //--------------------------------------------------------------------------------------
+
+    @Override
+    public void onClick(View v){
+        switch (v.getId()) {
+            case R.id.bmeses:
+                findViewById(R.id.include_main).setVisibility(View.INVISIBLE);
+                findViewById(R.id.meses).setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.bentrar:
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+                findViewById(R.id.inicio).setVisibility(View.INVISIBLE);
+                break;
+
+            case R.id.fab:
+                findViewById(R.id.include_main).setVisibility(View.INVISIBLE);
+                findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.fabSair:
+                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.bAddGasto2:
+                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+                findViewById(R.id.gasto_add).setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.bAddCredito:
+                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+                findViewById(R.id.addcredito).setVisibility(View.VISIBLE);
+                break;
+            case R.id.bCadastro:
+                findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+                findViewById(R.id.cadastro).setVisibility(View.VISIBLE);
+                break;
+            case R.id.btn_cancelarID:
                 findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
                 findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
-            }
-        });
+                break;
+            case R.id.btn_limparID:
 
 
-        Button btnLimpar = (Button) findViewById(R.id.btn_limparID);
-        btnLimpar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                break;
+            case R.id.btn_salvarID:
 
-            }
-        });
-
-        Button btnSalvar = (Button) findViewById(R.id.btn_salvarID);
-        btnSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 TextView txtNome = findViewById(R.id.tvNome);
                 TextView txtValor = findViewById(R.id.tvValor);
                 TextView txtCategoria = findViewById(R.id.tvCategoria);
@@ -328,7 +310,7 @@ public class MainActivity extends AppCompatActivity
                 String data = txtData.getText().toString();
 
                 if (nome.equals("")) {
-                    Snackbar.make(view, "Preencha o nome!", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Preencha o nome!", Snackbar.LENGTH_SHORT).show();
                 } else {
                     //salvando os dados
                     Gasto gasto = new Gasto(0, categoria, nome, data, valor);
@@ -345,29 +327,50 @@ public class MainActivity extends AppCompatActivity
                         gasto.setID(salvoID);
                         adapter.adicionarGasto(gasto);
 
-                        Snackbar.make(view, "Salvou!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(v, "Salvou!", Snackbar.LENGTH_LONG).show();
                         findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
                         findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
                     } else {
-                        Snackbar.make(view, "Erro ao salvarItem, consulte os logs!", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(v, "Erro ao salvarItem, consulte os logs!", Snackbar.LENGTH_LONG).show();
                         findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
                         findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
                     }
                 }
-            }
-        });
 
 
-        configurarRecycler();
+                break;
 
-        //configuração grafico
+        }
+    }
 
-        setupPieChart();
+    // configuração do botão fisico voltar do android
+    //----------------------------------------------------------------------------------------------
+    @Override
+    public void onBackPressed() {
 
+        if((findViewById(R.id.meses).getVisibility()) == View.VISIBLE)
+            findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+        if((findViewById(R.id.menu_add).getVisibility()) == View.VISIBLE)
+            findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+        if((findViewById(R.id.gasto_add).getVisibility()) == View.VISIBLE)
+            findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
+        findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
+
+        if((findViewById(R.id.addcredito).getVisibility()) == View.VISIBLE)
+            findViewById(R.id.addcredito).setVisibility(View.INVISIBLE);
+        findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
+
+        if((findViewById(R.id.cadastro).getVisibility()) == View.VISIBLE)
+            findViewById(R.id.cadastro).setVisibility(View.INVISIBLE);
+        findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
     }
 
     //LER QRCODE
-
+    //----------------------------------------------------------------------------------------------
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult leitura = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
         String[] cod;
@@ -382,7 +385,7 @@ public class MainActivity extends AppCompatActivity
                 qrnome = buscaNota.getEmissor(buscaNota.getWebPage());
                 qrvalor = buscaNota.getValor(buscaNota.getWebPage());
 
-                tvdata.setText(qrdata);
+                //tvdata.setText(qrdata);
                 tvnome.setText(qrnome);
                 tvvalor.setText(qrvalor);
 
@@ -398,6 +401,7 @@ public class MainActivity extends AppCompatActivity
 
 
     //metodo set do grafico
+    //----------------------------------------------------------------------------------------------
     private void setupPieChart() {
         List<PieEntry> entries = new ArrayList<>();
 
@@ -496,19 +500,6 @@ public class MainActivity extends AppCompatActivity
 //            }
 //        }
 //    }
-
-    @Override
-    public void onBackPressed() {
-
-        if((findViewById(R.id.meses).getVisibility()) == View.VISIBLE)
-        findViewById(R.id.meses).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
-
-        if((findViewById(R.id.menu_add).getVisibility()) == View.VISIBLE)
-            findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
-    }
-
 
 
     @SuppressWarnings("StatementWithEmptyBody")
