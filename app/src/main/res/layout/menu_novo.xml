@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/planodefundo">
+    android:background="@color/colorPrimary">
 
     <Button
         android:id="@+id/bCadastro"
@@ -13,11 +13,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="100dp"
-        android:background="@color/zxing_result_view"
+        android:background="@drawable/arredondado"
         android:text="Cadastro"
         android:textAlignment="center"
         android:textColor="@color/zxing_status_text"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,11 +30,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@color/zxing_result_view"
+        android:background="@drawable/arredondado"
         android:text="Adicionar Crédito"
         android:textAlignment="center"
         android:textColor="@color/zxing_status_text"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/bCadastro"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,11 +47,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@color/zxing_result_view"
+        android:background="@drawable/arredondado"
         android:text="Adicionar Gasto"
         android:textAlignment="center"
         android:textColor="@color/zxing_status_text"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/bAddCredito"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,40 +59,19 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSair"
-        android:layout_width="43dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="66dp"
+        android:layout_height="55dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:clickable="true"
-        app:backgroundTint="@color/zxing_transparent"
-        app:fabSize="mini"
+        app:backgroundTint="@color/ic_logo_background"
+        app:fabCustomSize="56dp"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.904"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:maxImageSize="60dp"
-        app:srcCompat="@drawable/close"
+        app:maxImageSize="25dp"
+        app:srcCompat="@drawable/close_da"
         app:useCompatPadding="true" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="131dp"
-        android:layout_height="131dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.32"
-        tools:srcCompat="@drawable/financa2" />
 
     <TextView
         android:id="@+id/textView10"
@@ -100,7 +79,7 @@
         android:layout_height="43dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="7dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="12dp"
         android:text="Nome Sobrenome"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
@@ -108,6 +87,18 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/bAddGasto2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="277dp"
+        android:layout_height="223dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/financa2" />
 </android.support.constraint.ConstraintLayout>
