@@ -395,10 +395,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 BuscaNota buscaNota = new BuscaNota(cod[1]);
 
                 qrdata = buscaNota.getDataEmissao(buscaNota.getWebPage());
+
+                String date[];
+                date = qrdata.split("/");
+                Dia = Integer.parseInt(date[0]);
+                Mes = Integer.parseInt(date[1]);
+                Ano = Integer.parseInt(date[2]);
+
+                AtualizarData();
+
                 qrnome = buscaNota.getEmissor(buscaNota.getWebPage());
                 qrvalor = buscaNota.getValor(buscaNota.getWebPage());
 
-                //tvdata.setText(qrdata);
                 tvnome.setText(qrnome);
                 tvvalor.setText(qrvalor);
 

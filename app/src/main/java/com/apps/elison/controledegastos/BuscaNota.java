@@ -96,7 +96,7 @@ class BuscaNota {
             count++;
         }
         resultado = valores[2];
-        return valor[2] = resultado.substring(resultado.length()-19);
+        return valor[2] = resultado.substring(resultado.length()-19,resultado.length()-9);
     }
 
     String enviaDados(){
