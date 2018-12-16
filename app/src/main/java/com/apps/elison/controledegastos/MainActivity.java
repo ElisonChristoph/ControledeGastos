@@ -54,6 +54,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -78,6 +90,15 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
+    ImageButton bScan ;
+    String qrnome;
+    String qrdata;
+    String qrvalor;
+
+    TextView tvnome;
+    TextView tvdata;
+    TextView tvvalor;
+
     private ConstraintLayout main_layout;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -86,6 +107,32 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         main_layout = findViewById(R.id.main_layoutID);
+
+        // - // -- // -- // -- // -- //
+
+        //LER QRCODE
+
+        bScan =  (ImageButton) findViewById(R.id.bScan);
+
+        tvnome = (TextView) findViewById(R.id.tvNome);
+        tvdata = (TextView) findViewById(R.id.txtData);
+        tvvalor = (TextView) findViewById(R.id.tvValor);
+
+        final Activity activity = this;
+
+        bScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IntentIntegrator integrator = new IntentIntegrator(activity);
+                integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+                integrator.setPrompt("Poscione a camera"); // texto que irá aparecer quando iniciar o scanner
+                integrator.setCameraId(0);
+                integrator.setBeepEnabled(false);
+                integrator.setOrientationLocked(true);
+                integrator.initiateScan();
+
+            }
+        });
 
         // -- // -- // -- // -- // -- //
 
@@ -270,7 +317,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 TextView txtNome = findViewById(R.id.tvNome);
-                TextView txtValor = findViewById(R.id.nValor);
+                TextView txtValor = findViewById(R.id.tvValor);
                 TextView txtCategoria = findViewById(R.id.tvCategoria);
                 TextView txtData = findViewById(R.id.txtData);
 
@@ -316,6 +363,36 @@ public class MainActivity extends AppCompatActivity
         //configuração grafico
 
         setupPieChart();
+
+    }
+
+    //LER QRCODE
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult leitura = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        String[] cod;
+        if(leitura!=null){
+            if(leitura.getContents()!=null){
+
+                cod =leitura.getContents().split("=");// separa a chave pois o texto lido retorna um site mais complexo
+
+                BuscaNota buscaNota = new BuscaNota(cod[1]);
+
+                qrdata = buscaNota.getDataEmissao(buscaNota.getWebPage());
+                qrnome = buscaNota.getEmissor(buscaNota.getWebPage());
+                qrvalor = buscaNota.getValor(buscaNota.getWebPage());
+
+                tvdata.setText(qrdata);
+                tvnome.setText(qrnome);
+                tvvalor.setText(qrvalor);
+
+
+            }else{
+                System.out.println("erro");
+            }
+        }else {
+            onActivityResult(requestCode, resultCode, data);
+        }
 
     }
 
@@ -407,18 +484,18 @@ public class MainActivity extends AppCompatActivity
 
 
     // Recebendo retorno de activity chamadas
-    protected void onActivityResult(int codigo, int resultado, Intent i) {
-
-        // se o resultado de uma Activity for da Activity_DADOS_PESSOIS
-        if (codigo == Activity_DADOS_PESSOAIS) {
-            // se o "i" (Intent) estiver preenchido, pega os seus dados (getExtras())
-            Bundle params = i != null ? i.getExtras() : null;
-            if (params != null) {
-                seu_nome.setText(params.getString("Nome"));
-                seu_email.setText(params.getString("Email"));
-            }
-        }
-    }
+//    protected void onActivityResult(int codigo, int resultado, Intent i) {
+//
+//        // se o resultado de uma Activity for da Activity_DADOS_PESSOIS
+//        if (codigo == Activity_DADOS_PESSOAIS) {
+//            // se o "i" (Intent) estiver preenchido, pega os seus dados (getExtras())
+//            Bundle params = i != null ? i.getExtras() : null;
+//            if (params != null) {
+//                seu_nome.setText(params.getString("Nome"));
+//                seu_email.setText(params.getString("Email"));
+//            }
+//        }
+//    }
 
     @Override
     public void onBackPressed() {
