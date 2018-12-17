@@ -375,6 +375,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibJaneiro:
+                mesSelected = "01";
 
                 bMeses.setImageResource(mesesButtonArray[0]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
@@ -382,6 +383,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibFevereiro:
+                mesSelected = "02";
 
                 bMeses.setImageResource(mesesButtonArray[1]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
@@ -389,6 +391,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibMarco:
+                mesSelected = "03";
 
                 bMeses.setImageResource(mesesButtonArray[2]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
@@ -396,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibAbril:
+                mesSelected = "04";
 
                 bMeses.setImageResource(mesesButtonArray[3]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
@@ -403,6 +407,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibMaio:
+                mesSelected = "05";
 
                 bMeses.setImageResource(mesesButtonArray[4]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
@@ -410,6 +415,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibJunho:
+                mesSelected = "06";
 
                 bMeses.setImageResource(mesesButtonArray[5]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
@@ -417,6 +423,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibJulho:
+                mesSelected = "07";
 
                 bMeses.setImageResource(mesesButtonArray[6]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
