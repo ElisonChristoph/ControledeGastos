@@ -10,7 +10,7 @@ public class Gasto {
     private String data;
     private String valor;
 
-    public Gasto(long ID, String categoria, String nome, String data, String valor) {
+    public Gasto(long ID, String nome, String valor, String data, String categoria) {
         this.ID = ID;
         this.categoria = categoria;
         this.nome = nome;

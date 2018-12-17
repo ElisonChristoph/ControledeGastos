@@ -13,6 +13,7 @@ import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,11 +25,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,35 +52,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener ,NavigationView.OnNavigationItemSelectedListener {
 
-    private static final String NOME_ARQUIVO = "arquivo_gastos.txt";
+    private static final String NOME_ARQUIVO = "arquivo_listadegastos.txt";
     private static final int Activity_DADOS_PESSOAIS = 10;
 
     private RecyclerView recyclerView;
     private RecyclerView recyclerViewMeses;
     private GastosAdapter adapter;
-    private MesAdapter adaptermes;
     List<Mes> mesList = new ArrayList<>();
-
-    private String array_spinner[];
 
     private static EditText txtData;
     private static int Ano;
@@ -90,16 +81,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int Hora;
     private int Minuto;
 
-    Spinner categoria;
-
     private TextView seu_nome;
     private TextView seu_email;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
     private Button bAddGasto, bAddCredito, bCadastro, btnCancelar, btnSalvar, btnLimpar;
-    private ImageButton bMeses, btnEntrar, bScan;
+    private ImageButton bMeses, btnEntrar, bScan, bjaneiro, bfevereiro, bmarco, babril, bmaio, bjunho, bjulho, bagosto, bsetembro, boutubro, bnovembro, bdezembro;
     private FloatingActionButton fab, fabSair;
+
+    final int[] mesesButtonArray = {
+            R.drawable.dezembro
+            ,2,3,4,5,6,7,8,9,
+            R.drawable.ic_dezembro,
+            R.drawable.novembro,
+            R.drawable.ic_dezembro
+
+    };
 
     String qrnome;
     String qrdata;
@@ -117,17 +115,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         main_layout = findViewById(R.id.main_layoutID);
-
-        array_spinner=new String[4];
-        array_spinner[0]="ENTRETERIMENTO";
-        array_spinner[1]="ALIMENTAÇÃO";
-        array_spinner[2]="TRANSPORTE";
-        array_spinner[3]="GASTOS MENSAIS";
-        categoria = (Spinner) findViewById(R.id.sCategoria);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                this,R.layout.spinner_item,array_spinner);
-        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
-        categoria.setAdapter(spinnerArrayAdapter);
 
         //Leitor do QRCODE
         //---------------------------------------------------------------------------
@@ -180,37 +167,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int mes = (cal.get(Calendar.MONTH)) ;
 
 
-        //configuração dos meses
-
-        final int[] mesesButtonArray = {
-                1,2,3,4,5,6,7,8,9,
-                R.drawable.outubro,
-                R.drawable.novembro,
-                R.drawable.ic_dezembro
-
-        };
-
-        //recyclerview dos meses
-        recyclerViewMeses = findViewById(R.id.meses_recyclerviewID);
-        recyclerViewMeses.setHasFixedSize(true);
-
-        mesList.add(new Mes(1,"Janeiro", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(1,"Janeiro", 0, 0,0,R.drawable.ic_dezembro));
         mesList.add(new Mes(2,"Fevereiro", 0, 0,0,R.drawable.calendario));
         mesList.add(new Mes(3,"Março", 0, 0,0,R.drawable.calendario));
         mesList.add(new Mes(4,"Abril", 0, 0,0,R.drawable.calendario));
         mesList.add(new Mes(5,"Maio", 0, 0,0,R.drawable.calendario));
         mesList.add(new Mes(6,"Junho", 0, 0,0,R.drawable.calendario));
         mesList.add(new Mes(7,"Julho", 0, 0,0,R.drawable.calendario));
-        mesList.add(new Mes(8,"Agosto", 0, 0,0,R.drawable.calendario));
-        mesList.add(new Mes(9,"Setembro", 0, 0,0,R.drawable.calendario));
-        mesList.add(new Mes(10,"Outubro", 0, 0,0,R.drawable.calendario));
-        mesList.add(new Mes(11,"Novembro", 0, 0,0,R.drawable.calendario));
-        mesList.add(new Mes(12,"Dezembro", 0, 0,0,R.drawable.calendario));
+        mesList.add(new Mes(8,"Agosto", 0, 0,0,R.drawable.ic_dezembro));
+        mesList.add(new Mes(9,"Setembro", 0, 0,0,R.drawable.ic_dezembro));
+        mesList.add(new Mes(10,"Outubro", 0, 0,0,R.drawable.ic_dezembro));
+        mesList.add(new Mes(11,"Novembro", 0, 0,0,R.drawable.ic_dezembro));
+        mesList.add(new Mes(12,"Dezembro", 0, 0,0,R.drawable.ic_dezembro));
 
-        recyclerViewMeses.setAdapter(new MesAdapter(mesList, this));
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerViewMeses.setLayoutManager(linearLayoutManager);
 
         //Metodo para buscar e apresentar os gastos
         //-------------------------------------------------------------------------------------------------------
@@ -218,6 +187,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         //----------------------------------------------------------------------------------------------------
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
         // Obtem a referência do layout de navegação
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -229,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         seu_email = headerView.findViewById(R.id.seuEmailID);
 
         // Inicialização para gravar as preferencias
-        pref = getSharedPreferences("ListaGastosPrefArq", MODE_PRIVATE);
+        pref = getSharedPreferences("ListaComprasPrefArq", MODE_PRIVATE);
         editor = pref.edit();
 
         // Verifica se já foi gravado valores
@@ -270,6 +245,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnLimpar.setOnClickListener(this);
         btnSalvar = (Button) findViewById(R.id.btn_salvarID);
         btnSalvar.setOnClickListener(this);
+
+        //botoes dos meses
+        bjaneiro = (ImageButton) findViewById(R.id.ibJaneiro);
+        bjaneiro.setOnClickListener(this);
+        bfevereiro = (ImageButton) findViewById(R.id.ibFevereiro);
+        bfevereiro.setOnClickListener(this);
+        bmarco = (ImageButton) findViewById(R.id.ibMarco);
+        bmarco.setOnClickListener(this);
+        babril = (ImageButton) findViewById(R.id.ibAbril);
+        babril.setOnClickListener(this);
+        bmaio = (ImageButton) findViewById(R.id.ibMaio);
+        bmaio.setOnClickListener(this);
+        bjunho = (ImageButton) findViewById(R.id.ibJunho);
+        bjunho.setOnClickListener(this);
+        bjulho = (ImageButton) findViewById(R.id.ibJulho);
+        bjulho.setOnClickListener(this);
+        bagosto = (ImageButton) findViewById(R.id.ibAgosto);
+        bagosto.setOnClickListener(this);
+        bsetembro = (ImageButton) findViewById(R.id.ibSetembro);
+        bsetembro.setOnClickListener(this);
+        boutubro = (ImageButton) findViewById(R.id.ibOutubro);
+        boutubro.setOnClickListener(this);
+        bnovembro = (ImageButton) findViewById(R.id.ibNovembro);
+        bnovembro.setOnClickListener(this);
+        bdezembro = (ImageButton) findViewById(R.id.ibDezembro);
+        bdezembro.setOnClickListener(this);
+
     }
     // Click Listeners
     //--------------------------------------------------------------------------------------
@@ -318,20 +320,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 break;
+            case R.id.ibJaneiro:
+
+                bMeses.setImageResource(mesesButtonArray[1]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibNovembro:
+
+                bMeses.setImageResource(mesesButtonArray[11]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
             case R.id.btn_salvarID:
 
-                EditText txtNome = findViewById(R.id.tvNome);
-                EditText txtValor = findViewById(R.id.tvValor);
-
-
-               // EditText txtCategoria = findViewById(R.id.tvCategoria);
-                EditText txtData = findViewById(R.id.txtData);
+                TextView txtNome = findViewById(R.id.tvNome);
+                TextView txtValor = findViewById(R.id.tvValor);
+                TextView txtCategoria = findViewById(R.id.tvCategoria);
+                TextView txtData = findViewById(R.id.txtData);
 
                 //pegando os valores
                 String nomegasto = txtNome.getText().toString();
                 String valorgasto = txtValor.getText().toString();
                 String datagasto = txtData.getText().toString();
-                String categoriagasto = (String) categoria.getSelectedItem();
+                String categoriagasto = txtCategoria.getText().toString();
 
                 if (nomegasto.equals("")) {
                     Snackbar.make(v, "Preencha o Nome!", Snackbar.LENGTH_SHORT).show();
@@ -351,9 +365,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     long salvoID = dao.salvarItem(gasto);
                     if (salvoID != -1) {
                         //limpa os campos
-                        //txtNome.setText("");
+                        txtNome.setText("");
                         txtValor.setText("");
-                       // txtCategoria.setText("");
+                        txtCategoria.setText("");
 
                         //adiciona no recyclerView
                         gasto.setID(salvoID);
@@ -374,6 +388,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
 
     // configuração do botão fisico voltar do android
     //----------------------------------------------------------------------------------------------
@@ -414,18 +429,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 BuscaNota buscaNota = new BuscaNota(cod[1]);
 
                 qrdata = buscaNota.getDataEmissao(buscaNota.getWebPage());
-
-                String date[];
-                date = qrdata.split("/");
-                Dia = Integer.parseInt(date[0]);
-                Mes = Integer.parseInt(date[1]);
-                Ano = Integer.parseInt(date[2]);
-
-                AtualizarData();
-
                 qrnome = buscaNota.getEmissor(buscaNota.getWebPage());
                 qrvalor = buscaNota.getValor(buscaNota.getWebPage());
 
+                //tvdata.setText(qrdata);
                 tvnome.setText(qrnome);
                 tvvalor.setText(qrvalor);
 
@@ -494,16 +501,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static void AtualizarData()
     {
-        if (Dia<10 && Mes <10){
-            txtData.setText(new StringBuilder().append("0").append(Dia).append("/").append("0").append(Mes).append("/").append(Ano).append(" "));
-        }else if (Dia<10 && Mes >=10){
-            txtData.setText(new StringBuilder().append("0").append(Dia).append("/").append(Mes).append("/").append(Ano).append(" "));
-        }else if (Dia>=10 && Mes <10){
-            txtData.setText(new StringBuilder().append(Dia).append("/").append("0").append(Mes).append("/").append(Ano).append(" "));
-        } else {
-            txtData.setText(new StringBuilder().append(Dia).append("/").append(Mes).append("/").append(Ano).append(" "));
-        }
-
+        txtData.setText(new StringBuilder().append(Dia).append("/").append(Mes + 1).append("/").append(Ano).append(" "));
     }
 
 //    private static void MensagemData()
@@ -641,7 +639,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         GastoDAO dao = new GastoDAO(this);
         List<Gasto> gastos = dao.retornarTodos();
         for (Gasto gasto : gastos) {
-            texto = texto + gasto.getCategoria() + ":" + gasto.getNome() + ":" + gasto.getData() + ":" + gasto.getValor() + "\n";
+            texto = texto + gasto.getNome() + ":" + gasto.getValor() + ":" + gasto.getData() + ":" + gasto.getCategoria() + "\n";
 
         }
         Log.w("Texto",texto);

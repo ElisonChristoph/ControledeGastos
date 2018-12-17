@@ -20,12 +20,10 @@ public class GastoDAO {
     // retorna o ID da inserção
     public long salvarItem(Gasto gasto){
         ContentValues cv = new ContentValues();
-        cv.put("Categoria", gasto.getCategoria());
         cv.put("Nome", gasto.getNome());
         cv.put("Valor", gasto.getValor());
         cv.put("Data", gasto.getData());
-        //cv.put("Imagem", gasto.getImagem());
-
+        cv.put("Categoria", gasto.getCategoria());
         return gw.getDatabase().insert(TABLE_GASTOS, null, cv);
     }
 
@@ -39,12 +37,11 @@ public class GastoDAO {
         Cursor cursor = gw.getDatabase().rawQuery("SELECT * FROM Gastos", null);
         while(cursor.moveToNext()){
             int id = cursor.getInt(cursor.getColumnIndex("ID"));
-            String categoria = cursor.getString(cursor.getColumnIndex("Categoria"));
             String nome = cursor.getString(cursor.getColumnIndex("Nome"));
-            String data = cursor.getString(cursor.getColumnIndex("Data"));
             String valor = cursor.getString(cursor.getColumnIndex("Valor"));
-            //int imagem = cursor.getInt(cursor.getColumnIndex("Imagem"));
-            gastos.add(new Gasto(id, categoria, nome, data, valor));
+            String data = cursor.getString(cursor.getColumnIndex("Data"));
+            String categoria = cursor.getString(cursor.getColumnIndex("Categoria"));
+            gastos.add(new Gasto(id, nome, valor, data, categoria));
         }
         cursor.close();
         return gastos;
@@ -52,7 +49,7 @@ public class GastoDAO {
 
     public void recriarTabela(){
         gw.getDatabase().execSQL("DROP TABLE Gastos");
-        gw.getDatabase().execSQL("CREATE TABLE Gastos (ID INTEGER PRIMARY KEY AUTOINCREMENT, Categoria TEXT, Nome TEXT, Data TEXT, Valor TEXT NOT NULL)");
+        gw.getDatabase().execSQL("CREATE TABLE Gastos (ID INTEGER PRIMARY KEY AUTOINCREMENT, Nome TEXT NOT NULL, Valor TEXT, Data TEXT, Categoria TEXT)");
     }
 
 }

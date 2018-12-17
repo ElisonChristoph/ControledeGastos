@@ -4,18 +4,159 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mesesmain"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/zxing_viewfinder_mask">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/meses_recyclerviewID"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <ImageButton
+        android:id="@+id/ibJaneiro"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/ibMarco"
+        app:layout_constraintEnd_toStartOf="@+id/ibFevereiro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibFevereiro"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/ibAbril"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ibJaneiro"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibMarco"
+        android:layout_width="174dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/ibMaio"
+        app:layout_constraintEnd_toStartOf="@+id/ibAbril"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ibJaneiro"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibAbril"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/ibJunho"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ibMarco"
+        app:layout_constraintTop_toBottomOf="@+id/ibFevereiro"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibMaio"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/ibJulho"
+        app:layout_constraintEnd_toStartOf="@+id/ibJunho"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ibMarco"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibJulho"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/ibSetembro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ibMaio"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibSetembro"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/ibNovembro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ibJulho"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibNovembro"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ibSetembro"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibJunho"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/ibAgosto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ibMarco"
+        app:layout_constraintTop_toBottomOf="@+id/ibAbril"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibAgosto"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/ibOutubro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ibMaio"
+        app:layout_constraintTop_toBottomOf="@+id/ibJunho"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibOutubro"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="8dp"
+        android:background="?attr/actionBarItemBackground"
+        app:layout_constraintBottom_toTopOf="@+id/ibDezembro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ibJulho"
+        app:layout_constraintTop_toBottomOf="@+id/ibAgosto"
+        app:srcCompat="@drawable/ic_dezembro" />
+
+    <ImageButton
+        android:id="@+id/ibDezembro"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="?attr/actionBarItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/ibSetembro"
+        app:layout_constraintTop_toBottomOf="@+id/ibOutubro"
+        app:srcCompat="@drawable/ic_dezembro" />
 </android.support.constraint.ConstraintLayout>
