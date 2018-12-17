@@ -52,9 +52,12 @@ public class GastoDAO {
         Cursor cursor = gw.getDatabase().rawQuery("SELECT * FROM Gastos", null);
         while(cursor.moveToNext()){
             String[] mesOb = cursor.getString(cursor.getColumnIndex("Data")).split("/");
-            if( mesOb[2]== mes) {
+            System.out.println("Mes objeto "+mesOb[1]);
+            System.out.println("Mes selecionado "+mes);
+            if( mesOb[1].equals(mes)) {
                 int id = cursor.getInt(cursor.getColumnIndex("ID"));
                 String nome = cursor.getString(cursor.getColumnIndex("Nome"));
+                System.out.println("Compra "+nome);
                 String valor = cursor.getString(cursor.getColumnIndex("Valor"));
                 String data = cursor.getString(cursor.getColumnIndex("Data"));
                 String categoria = cursor.getString(cursor.getColumnIndex("Categoria"));

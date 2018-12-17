@@ -416,14 +416,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibNovembro:
-
+                mesSelected ="11";
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[10]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
 
                 break;
             case R.id.ibDezembro:
-
+                mesSelected ="12";
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[11]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -630,7 +632,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Adiciona o adapter que irá anexar os objetos à lista.
         GastoDAO dao = new GastoDAO(this);
-        adapter = new GastosAdapter(dao.retornarTodos());
+        adapter = new GastosAdapter(dao.retornaMes(mesSelected));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
