@@ -1,16 +1,13 @@
 package com.apps.elison.controledegastos.DAO;
 
-import java.util.Date;
-
-public class Gasto {
-
-
+public class Credito {
     private long ID;
-    private String categoria, nome,valor,data;
+    private String nome;
+    private String data;
+    private String valor;
 
-    public Gasto(long ID, String nome, String valor, String data , String categoria) {
+    public Credito(long ID,  String nome, String data , String valor) {
         this.ID = ID;
-        this.categoria = categoria;
         this.nome = nome;
         this.data = data;
         this.valor = valor;
@@ -23,14 +20,6 @@ public class Gasto {
 
     public void setID(long ID) {
         this.ID = ID;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
     }
 
     public String getNome() {
@@ -56,5 +45,4 @@ public class Gasto {
     public void setData(String data) {
         this.data = data;
     }
-
 }

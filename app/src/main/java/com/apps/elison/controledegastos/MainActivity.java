@@ -39,9 +39,12 @@ import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.widget.DatePicker;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import com.apps.elison.controledegastos.DAO.Credito;
+import com.apps.elison.controledegastos.DAO.CreditoDAO;
 import com.apps.elison.controledegastos.DAO.Gasto;
 import com.apps.elison.controledegastos.DAO.GastoDAO;
 import com.apps.elison.controledegastos.DAO.Mes;
@@ -93,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
-    private Button bAddGasto, bAddCredito, bCadastro, btnCancelar, btnSalvar, btnLimpar;
+    private Button bAddGasto, bAddCredito, bCadastro, btnCancelar, btnSalvar, btnLimpar,bSalvarCredito;
     private ImageButton bMeses, btnEntrar, bScan, bjaneiro, bfevereiro, bmarco, babril, bmaio, bjunho, bjulho, bagosto, bsetembro, boutubro, bnovembro, bdezembro;
     private FloatingActionButton fab, fabSair;
     Spinner categoria;
@@ -122,8 +125,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText tvdata;
     EditText tvvalor;
 
-     TextView tvDespesas;
+    EditText tvNomeCredito;
+    EditText nValorCredito;
+
+    TextView tvDespesas,tvReceitas,tvSaldo;
     private String mesSelected;
+    Date d = new Date();
+    SimpleDateFormat dataCom = new SimpleDateFormat("d/M/y");
 
     private ConstraintLayout main_layout;
 
@@ -154,7 +162,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvdata = (EditText) findViewById(R.id.txtData);
         tvvalor = (EditText) findViewById(R.id.tvValor);
 
+        tvNomeCredito = (EditText) findViewById(R.id.tvNomeCredito);
+        nValorCredito =(EditText) findViewById(R.id.nValorCredito);
+
         tvDespesas = (TextView) findViewById(R.id.tvDespesas);
+        tvReceitas = (TextView) findViewById(R.id.tvReceitas);
+        tvSaldo = (TextView) findViewById(R.id.tvSaldo);
 
         final Activity activity = this;
 
@@ -195,8 +208,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AtualizarData();
 
         // data/hora atual
-        Date d = new Date();
+        d = new Date();
         SimpleDateFormat mesO = new SimpleDateFormat("M");
+
+
 
 
         int mes = Integer.parseInt(mesO.format(d));
@@ -281,6 +296,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnLimpar.setOnClickListener(this);
         btnSalvar = (Button) findViewById(R.id.btn_salvarID);
         btnSalvar.setOnClickListener(this);
+        bSalvarCredito = (Button) findViewById(R.id.bSalvarCredito);
+        bSalvarCredito.setOnClickListener(this);
 
         //botoes dos meses
         bjaneiro = (ImageButton) findViewById(R.id.ibJaneiro);
@@ -344,6 +361,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
                 findViewById(R.id.addcredito).setVisibility(View.VISIBLE);
                 break;
+
             case R.id.bCadastro:
                 findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
                 findViewById(R.id.cadastro).setVisibility(View.VISIBLE);
@@ -406,6 +424,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibAgosto:
+                mesSelected = "08";
 
                 bMeses.setImageResource(mesesButtonArray[7]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
@@ -413,21 +432,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibSetembro:
-
+                mesSelected = "09";
                 bMeses.setImageResource(mesesButtonArray[8]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
 
                 break;
             case R.id.ibOutubro:
-
+                mesSelected = "10";
                 bMeses.setImageResource(mesesButtonArray[9]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
 
                 break;
             case R.id.ibNovembro:
-                mesSelected ="11";
+                mesSelected = "11";
                 configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[10]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
@@ -435,7 +454,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ibDezembro:
-                mesSelected ="12";
+                mesSelected = "12";
                 configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[11]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
@@ -448,7 +467,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String nomegasto = tvnome.getText().toString();
                 String valorgasto = tvvalor.getText().toString();
                 String datagasto = txtData.getText().toString();
-                String categoriagasto = (String)categoria.getSelectedItem();
+                String categoriagasto = (String) categoria.getSelectedItem();
 
                 if (nomegasto.equals("")) {
                     Snackbar.make(v, "Preencha o Nome!", Snackbar.LENGTH_SHORT).show();
@@ -463,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } else {
                     //salvando os dados
-                    Gasto gasto = new Gasto(0, categoriagasto, nomegasto, datagasto, valorgasto);
+                    Gasto gasto = new Gasto(0, nomegasto, valorgasto, datagasto,categoriagasto);
                     GastoDAO dao = new GastoDAO(getBaseContext());
                     long salvoID = dao.salvarItem(gasto);
                     if (salvoID != -1) {
@@ -487,6 +506,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
                     }
                 }
+
+
+                break;
+
+
+            case R.id.bSalvarCredito:
+                //pegando os valores
+                String nomeCredito = tvNomeCredito.getText().toString();
+                String valorCredito = nValorCredito.getText().toString();
+                String dataCredito = dataCom.format(d);
+                String categoriaGasto = "Credito";
+                if (nomeCredito.equals("")) {
+                    Snackbar.make(v, "Preencha o Nome!", Snackbar.LENGTH_SHORT).show();
+                    if (valorCredito.equals("")) {
+                        Snackbar.make(v, "Preencha o Valor!", Snackbar.LENGTH_SHORT).show();
+                    }
+                } else {
+                    //salvando os dados
+                    Gasto gasto = new Gasto(0, nomeCredito, valorCredito, dataCredito, categoriaGasto);
+                    GastoDAO dao = new GastoDAO(getBaseContext());
+                    long salvoID = dao.salvarItem(gasto);
+                    if (salvoID != -1) {
+                        //limpa os campos
+                        tvNomeCredito.setText("");
+                        tvNomeCredito.setText("");
+
+                        gasto.setID(salvoID);
+
+                        Snackbar.make(v, "Salvo com Sucesso!", Snackbar.LENGTH_LONG).show();
+                        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+                        findViewById(R.id.addcredito).setVisibility(View.INVISIBLE);
+                        configurarRecycler();
+                    } else {
+                        Snackbar.make(v, "Erro ao salvarItem, consulte os logs!", Snackbar.LENGTH_LONG).show();
+                        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+                        findViewById(R.id.addcredito).setVisibility(View.INVISIBLE);
+                    }
+                    findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
+                }
+
 
 
                 break;
@@ -638,6 +697,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void configurarRecycler() {
+        DecimalFormat df = new DecimalFormat("0.00");
         // Configurando o gerenciador de layout para ser uma lista.
         recyclerView = (RecyclerView) findViewById(R.id.main_recyclerViewID);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -646,7 +706,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Adiciona o adapter que irá anexar os objetos à lista.
         GastoDAO dao = new GastoDAO(this);
         adapter = new GastosAdapter(dao.retornaMes(mesSelected));
-        tvDespesas.setText("R$ "+String.valueOf(dao.getValorTotal()));
+        float valorGastos = dao.getValorTotal();
+        float valorCredito = dao.getValorTotalCreditos();
+
+        tvDespesas.setText("R$ "+ df.format(valorGastos));
+        tvReceitas.setText("R$ "+df.format(valorCredito));
+
+        float saldo = (valorCredito - valorGastos);
+
+
+
+        System.out.println();
+
+        tvSaldo.setText("R$ "+df.format(saldo));
 
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -789,7 +861,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                }
                 // Instancia o dao para criar o banco e a tabela
                 GastoDAO dao = new GastoDAO(this);
+                CreditoDAO credDAO = new CreditoDAO(this);
                 dao.recriarTabela();
+                credDAO.recriarTabela();
                 //ler o arquivo
                 InputStreamReader inputStreamReader = new InputStreamReader(arquivo);
                 //Gerar Buffer do arquivo lido
@@ -801,6 +875,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String info[] = linhaArquivo.split(":");
                     Gasto item = new Gasto(0, info[0], info[1], info[2], info[3]);
                     dao.salvarItem(item);
+
                 }
                 arquivo.close();
 

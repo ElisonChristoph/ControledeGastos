@@ -11,7 +11,7 @@ import java.util.List;
 public class GastoDAO {
     private final String TABLE_GASTOS = "Gastos";
     private DB_Gateway gw;
-    float valorTotalMensal;
+    float valorTotalMensal,valorTotalCreditos;
 
     public GastoDAO(Context ctx){
         gw = DB_Gateway.getInstance(ctx);
@@ -54,9 +54,10 @@ public class GastoDAO {
         Cursor cursor = gw.getDatabase().rawQuery("SELECT * FROM Gastos", null);
         while(cursor.moveToNext()){
             String[] mesOb = cursor.getString(cursor.getColumnIndex("Data")).split("/");
+            String catOb = cursor.getString(cursor.getColumnIndex("Categoria"));
             System.out.println("Mes objeto "+mesOb[1]);
             System.out.println("Mes selecionado "+mes);
-            if( mesOb[1].equals(mes)) {
+            if( mesOb[1].equals(mes)&& !catOb.equals("Credito")) {
                 int id = cursor.getInt(cursor.getColumnIndex("ID"));
                 String nome = cursor.getString(cursor.getColumnIndex("Nome"));
                 System.out.println("Compra "+nome);
@@ -66,6 +67,10 @@ public class GastoDAO {
                 String categoria = cursor.getString(cursor.getColumnIndex("Categoria"));
                 gastos.add(new Gasto(id, nome, valor, data, categoria));
             }
+            else if(mesOb[1].equals(mes)&& catOb.equals("Credito")){
+                String valor = cursor.getString(cursor.getColumnIndex("Valor"));
+                valorTotalCreditos = valorTotalCreditos+Float.parseFloat(valor.replaceAll(",","."));
+            }
         }
         cursor.close();
         return gastos;
@@ -73,8 +78,10 @@ public class GastoDAO {
 
     public float getValorTotal(){
 
-
         return valorTotalMensal;
+    }
+    public float getValorTotalCreditos(){
+        return valorTotalCreditos;
     }
 
     public void recriarTabela(){

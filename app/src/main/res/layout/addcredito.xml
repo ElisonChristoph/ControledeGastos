@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btn_salvarID2"
+        android:id="@+id/bSalvarCredito"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
@@ -29,7 +29,7 @@
         android:textColor="@color/zxing_status_text"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_salvarID2"
+        app:layout_constraintEnd_toStartOf="@+id/bSalvarCredito"
         app:layout_constraintStart_toEndOf="@+id/btn_limparID2" />
 
     <Button
@@ -46,17 +46,17 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/nValor2"
+        android:id="@+id/nValorCredito"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:ems="10"
         android:inputType="numberDecimal"
-        app:layout_constraintBottom_toTopOf="@+id/btn_salvarID2"
+        app:layout_constraintBottom_toTopOf="@+id/bSalvarCredito"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/tvNome2" />
+        app:layout_constraintTop_toBottomOf="@+id/tvNomeCredito" />
 
     <TextView
         android:id="@+id/textView13"
@@ -68,18 +68,18 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btn_limparID2"
-        app:layout_constraintEnd_toStartOf="@+id/nValor2"
+        app:layout_constraintEnd_toStartOf="@+id/nValorCredito"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <EditText
-        android:id="@+id/tvNome2"
+        android:id="@+id/tvNomeCredito"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/nValor2"
+        app:layout_constraintBottom_toTopOf="@+id/nValorCredito"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView12"
@@ -95,7 +95,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView13"
-        app:layout_constraintEnd_toStartOf="@+id/tvNome2"
+        app:layout_constraintEnd_toStartOf="@+id/tvNomeCredito"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
