@@ -77,7 +77,6 @@ public class GastoDAO {
     }
 
     public float getValorTotal(){
-
         return valorTotalMensal;
     }
     public float getValorTotalCreditos(){

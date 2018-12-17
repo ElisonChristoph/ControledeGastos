@@ -215,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         int mes = Integer.parseInt(mesO.format(d));
-        System.out.println("mesatual "+mes);
         mesSelected=mesO.format(d);
 
         mesList.add(new Mes(1,"Janeiro", 0, 0,0,R.drawable.ic_janeiro));
@@ -630,12 +629,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //metodo set do grafico
     //----------------------------------------------------------------------------------------------
     private void setupPieChart() {
+
+        float entre = 0.0f, alim = 0.0f,trans = 0.0f, gast = 0.0f, total = 0.0f;
+        String cate;
+
+        GastoDAO gastos = new GastoDAO(this);
+        List<Gasto> gastosTotais = gastos.retornaMes(mesSelected);
+        for (int i=0;i<gastosTotais.size();i++){
+            cate = gastosTotais.get(i).getCategoria();
+            if (cate.equals("ENTRETERIMENTO")){
+               entre = entre+ Float.parseFloat(gastosTotais.get(i).getValor().replaceAll(",","."));
+               total =total + entre;
+            }else if(cate.equals("ALIMENTAÇÃO")){
+                alim = alim+ Float.parseFloat(gastosTotais.get(i).getValor().replaceAll(",","."));
+                total =total + alim;
+            }
+            else if(cate.equals("TRANSPORTE")){
+                trans = trans + Float.parseFloat(gastosTotais.get(i).getValor().replaceAll(",","."));
+                total =total + trans;
+            }
+            else if(cate.equals("GASTOS MENSAIS")){
+                gast = gast+ Float.parseFloat(gastosTotais.get(i).getValor().replaceAll(",","."));
+                total =total + gast;
+            }
+        }
+
+
         List<PieEntry> entries = new ArrayList<>();
 
-        entries.add(new PieEntry(18.5f, "ENTRETERIMENTO"));
-        entries.add(new PieEntry(26.7f, "ALILMENTAÇÃO"));
-        entries.add(new PieEntry(24.0f, "TRANSPORTE"));
-        entries.add(new PieEntry(30.8f, "GASTOS MENSAIS"));
+        entries.add(new PieEntry(entre, "ENTRETERIMENTO"));
+        entries.add(new PieEntry(alim, "ALIMENTAÇÃO"));
+        entries.add(new PieEntry(trans, "TRANSPORTE"));
+        entries.add(new PieEntry(gast, "GASTOS MENSAIS"));
+
 
         PieDataSet set = new PieDataSet(entries, "Gastos");
         set.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -666,7 +692,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onDateSet(DatePicker view, int year, int month, int day)
         {
             Ano = year;
-            Mes = month;
+            Mes = month+1;
             Dia = day;
             AtualizarData();
             //MensagemData();
@@ -721,11 +747,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         float saldo = (valorCredito - valorGastos);
 
-
-
-        System.out.println();
-
         tvSaldo.setText("R$ "+df.format(saldo));
+
+        setupPieChart();
 
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
