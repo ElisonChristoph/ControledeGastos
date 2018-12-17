@@ -80,7 +80,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="7dp"
         android:layout_marginBottom="12dp"
-        android:text="Nome Sobrenome"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
