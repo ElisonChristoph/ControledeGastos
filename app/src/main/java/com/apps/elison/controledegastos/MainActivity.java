@@ -96,10 +96,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Spinner categoria;
 
     final int[] mesesButtonArray = {
-            R.drawable.dezembro
-            ,2,3,4,5,6,7,8,9,
-            R.drawable.ic_dezembro,
-            R.drawable.novembro,
+            R.drawable.ic_janeiro,
+            R.drawable.ic_fevereiro,
+            R.drawable.ic_marco,
+            R.drawable.ic_abril,
+            R.drawable.ic_maio,
+            R.drawable.ic_junho,
+            R.drawable.ic_julho,
+            R.drawable.ic_agosto,
+            R.drawable.ic_setembro,
+            R.drawable.ic_outubro,
+            R.drawable.ic_novembro,
             R.drawable.ic_dezembro
 
     };
@@ -340,15 +347,84 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ibJaneiro:
 
+                bMeses.setImageResource(mesesButtonArray[0]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibFevereiro:
+
                 bMeses.setImageResource(mesesButtonArray[1]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibMarco:
+
+                bMeses.setImageResource(mesesButtonArray[2]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibAbril:
+
+                bMeses.setImageResource(mesesButtonArray[3]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibMaio:
+
+                bMeses.setImageResource(mesesButtonArray[4]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibJunho:
+
+                bMeses.setImageResource(mesesButtonArray[5]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibJulho:
+
+                bMeses.setImageResource(mesesButtonArray[6]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibAgosto:
+
+                bMeses.setImageResource(mesesButtonArray[7]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibSetembro:
+
+                bMeses.setImageResource(mesesButtonArray[8]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibOutubro:
+
+                bMeses.setImageResource(mesesButtonArray[9]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
 
                 break;
             case R.id.ibNovembro:
 
+                bMeses.setImageResource(mesesButtonArray[10]);
+                findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+
+                break;
+            case R.id.ibDezembro:
+
                 bMeses.setImageResource(mesesButtonArray[11]);
-                mesSelected = "11";
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
 
@@ -409,9 +485,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
 
-        if((findViewById(R.id.meses).getVisibility()) == View.VISIBLE)
-            findViewById(R.id.meses).setVisibility(View.INVISIBLE);
-        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+//        if((findViewById(R.id.meses).getVisibility()) == View.VISIBLE)
+//            findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+//        findViewById(R.id.include_main).setVisibility(View.VISIBLE);
 
         if((findViewById(R.id.menu_add).getVisibility()) == View.VISIBLE)
             findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
