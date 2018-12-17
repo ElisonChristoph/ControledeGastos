@@ -625,10 +625,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setupPieChart() {
         List<PieEntry> entries = new ArrayList<>();
 
-        entries.add(new PieEntry(18.5f, "Alimentação"));
-        entries.add(new PieEntry(26.7f, "TV/Internet"));
-        entries.add(new PieEntry(24.0f, "Combustível"));
-        entries.add(new PieEntry(30.8f, "Outros"));
+        entries.add(new PieEntry(18.5f, "ENTRETERIMENTO"));
+        entries.add(new PieEntry(26.7f, "ALILMENTAÇÃO"));
+        entries.add(new PieEntry(24.0f, "TRANSPORTE"));
+        entries.add(new PieEntry(30.8f, "GASTOS MENSAIS"));
 
         PieDataSet set = new PieDataSet(entries, "Gastos");
         set.setColors(ColorTemplate.COLORFUL_COLORS);
