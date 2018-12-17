@@ -38,6 +38,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.widget.DatePicker;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.apps.elison.controledegastos.DAO.Gasto;
@@ -55,6 +57,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -189,8 +192,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AtualizarData();
 
         // data/hora atual
-        int mes = (cal.get(Calendar.MONTH));
+        Date d = new Date();
+        SimpleDateFormat mesO = new SimpleDateFormat("M");
 
+
+        int mes = Integer.parseInt(mesO.format(d));
+        System.out.println("mesatual "+mes);
+        mesSelected=mesO.format(d);
 
         mesList.add(new Mes(1,"Janeiro", 0, 0,0,R.drawable.ic_janeiro));
         mesList.add(new Mes(2,"Fevereiro", 0, 0,0,R.drawable.ic_fevereiro));
@@ -252,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //-------------------------------------------------------------------------------------------------------
 
         bMeses = (ImageButton) findViewById(R.id.bmeses);
-        bMeses.setImageResource(mesesButtonArray[mes]);
+        bMeses.setImageResource(mesesButtonArray[mes-1]);
         bMeses.setOnClickListener(this);
         btnEntrar = (ImageButton) findViewById(R.id.bentrar);
         btnEntrar.setOnClickListener(this);
@@ -633,6 +641,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Adiciona o adapter que irá anexar os objetos à lista.
         GastoDAO dao = new GastoDAO(this);
         adapter = new GastosAdapter(dao.retornaMes(mesSelected));
+
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
