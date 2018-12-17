@@ -42,7 +42,10 @@ dependencies {
     implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     implementation files('libs/jsoup-1.11.3.jar')
-    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.0'
+
 }
 //firebase
 apply plugin: 'com.google.gms.google-services'

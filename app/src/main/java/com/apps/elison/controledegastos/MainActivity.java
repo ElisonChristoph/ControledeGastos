@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -67,10 +68,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener ,NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener ,NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String NOME_ARQUIVO = "arquivo_gastos.txt";
     private static final int Activity_DADOS_PESSOAIS = 10;
@@ -111,11 +128,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ConstraintLayout main_layout;
 
+    private FirebaseAuth mAuth;
+    GoogleApiClient mGoogleApiClient;
+    GoogleSignInClient mGoogleSignInClient;
+    private static final int RC_SIGN_IN = 101;
+    FirebaseUser user;
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("firebase_web_client_id_for_google")
+                .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+                .build();
+         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // Configure Google Sign In
+
+        mAuth = FirebaseAuth.getInstance();
+
         main_layout = findViewById(R.id.main_layoutID);
 
         array_spinner=new String[4];
@@ -283,8 +319,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.bentrar:
-                findViewById(R.id.include_main).setVisibility(View.VISIBLE);
-                findViewById(R.id.inicio).setVisibility(View.INVISIBLE);
+                signIn();
+                user=FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    // Name, email address, and profile photo Url
+                    String name = user.getDisplayName();
+                    String email = user.getEmail();
+
+                    // Check if user's email is verified
+                    boolean emailVerified = user.isEmailVerified();
+
+                    // The user's ID, unique to the Firebase project. Do NOT use this value to
+                    // authenticate with your backend server, if you have one. Use
+                    // FirebaseUser.getIdToken() instead.
+                    String uid = user.getUid();
+                    System.out.println(name+"  "+email);
+                    findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+                    findViewById(R.id.inicio).setVisibility(View.INVISIBLE);
+                }
                 break;
 
             case R.id.fab:
@@ -405,6 +457,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //----------------------------------------------------------------------------------------------
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult leitura = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        System.out.println("passou aqui 406");
         String[] cod;
         if(leitura!=null){
             if(leitura.getContents()!=null){
@@ -433,7 +486,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }else{
                 System.out.println("erro");
             }
-        }else {
+        }
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        else if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+
+            }
+        }
+        else {
             onActivityResult(requestCode, resultCode, data);
         }
 
@@ -462,6 +528,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         txtData = (EditText) findViewById(R.id.txtData);
     }
+
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
     {
@@ -688,5 +755,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (IOException e) {
             Log.e("MainActivity", e.toString());
         }
+
     }
+
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
+
+    private void updateUI(FirebaseUser user) {
+        //hideProgressDialog();
+        if (user != null) {
+           // mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
+            //mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+
+          //  findViewById(R.id.signInButton).setVisibility(View.GONE);
+           // findViewById(R.id.signOutAndDisconnect).setVisibility(View.VISIBLE);
+        } else {
+        //    mStatusTextView.setText(R.string.signed_out);
+          //  mDetailTextView.setText(null);
+
+        //    findViewById(R.id.signInButton).setVisibility(View.VISIBLE);
+          //  findViewById(R.id.signOutAndDisconnect).setVisibility(View.GONE);
+        }
+    }
+
+    public void signIn(){
+        Intent signInIntent =mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent,RC_SIGN_IN);
+    }
+
+
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            String usuario = user.getDisplayName();
+                            System.out.println(usuario);
+//                            Intent i = new Intent(getApplicationContext(),ProfileActivity.class)
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            System.out.println("Passou else 817");
+                        }
+
+                        // ...
+                    }
+                });
+    }
+
 }
