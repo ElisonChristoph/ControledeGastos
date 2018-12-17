@@ -11,6 +11,7 @@ import java.util.List;
 public class GastoDAO {
     private final String TABLE_GASTOS = "Gastos";
     private DB_Gateway gw;
+    float valorTotalMensal;
 
     public GastoDAO(Context ctx){
         gw = DB_Gateway.getInstance(ctx);
@@ -49,6 +50,7 @@ public class GastoDAO {
 
     public List<Gasto> retornaMes(String mes){
         List<Gasto> gastos = new ArrayList<>();
+        valorTotalMensal =  0.0f;
         Cursor cursor = gw.getDatabase().rawQuery("SELECT * FROM Gastos", null);
         while(cursor.moveToNext()){
             String[] mesOb = cursor.getString(cursor.getColumnIndex("Data")).split("/");
@@ -59,6 +61,7 @@ public class GastoDAO {
                 String nome = cursor.getString(cursor.getColumnIndex("Nome"));
                 System.out.println("Compra "+nome);
                 String valor = cursor.getString(cursor.getColumnIndex("Valor"));
+                valorTotalMensal = valorTotalMensal+Float.parseFloat(valor.replaceAll(",","."));
                 String data = cursor.getString(cursor.getColumnIndex("Data"));
                 String categoria = cursor.getString(cursor.getColumnIndex("Categoria"));
                 gastos.add(new Gasto(id, nome, valor, data, categoria));
@@ -66,6 +69,12 @@ public class GastoDAO {
         }
         cursor.close();
         return gastos;
+    }
+
+    public float getValorTotal(){
+
+
+        return valorTotalMensal;
     }
 
     public void recriarTabela(){

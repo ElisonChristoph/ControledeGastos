@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText tvdata;
     EditText tvvalor;
 
+     TextView tvDespesas;
     private String mesSelected;
 
     private ConstraintLayout main_layout;
@@ -152,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvnome = (EditText) findViewById(R.id.tvNome);
         tvdata = (EditText) findViewById(R.id.txtData);
         tvvalor = (EditText) findViewById(R.id.tvValor);
+
+        tvDespesas = (TextView) findViewById(R.id.tvDespesas);
 
         final Activity activity = this;
 
@@ -472,10 +475,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //adiciona no recyclerView
                         gasto.setID(salvoID);
                         adapter.adicionarGasto(gasto);
+                        //tvDespesas.setText("R$ "+String.valueOf(dao.getValorTotal()));
 
                         Snackbar.make(v, "Salvo com Sucesso!", Snackbar.LENGTH_LONG).show();
                         findViewById(R.id.include_main).setVisibility(View.VISIBLE);
                         findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
+                        configurarRecycler();
                     } else {
                         Snackbar.make(v, "Erro ao salvarItem, consulte os logs!", Snackbar.LENGTH_LONG).show();
                         findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -641,6 +646,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Adiciona o adapter que irá anexar os objetos à lista.
         GastoDAO dao = new GastoDAO(this);
         adapter = new GastosAdapter(dao.retornaMes(mesSelected));
+        tvDespesas.setText("R$ "+String.valueOf(dao.getValorTotal()));
 
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
