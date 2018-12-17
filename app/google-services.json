@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "531279605474",
+    "firebase_url": "https://controledegastos-1383b.firebaseio.com",
+    "project_id": "controledegastos-1383b",
+    "storage_bucket": "controledegastos-1383b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531279605474:android:ec57388e2a1a043d",
+        "android_client_info": {
+          "package_name": "com.apps.elison.controledegastos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531279605474-cguhq0lg03ivmq2gphqb9rgr4kdilpa7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.elison.controledegastos",
+            "certificate_hash": "6c03e04a4873391869f5aa8abb8ceac4c56365d6"
+          }
+        },
+        {
+          "client_id": "531279605474-lu4t3ds99o0c2gcinuvope1cd5em61r7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqwV3pywB5qg1vzmZZrcGeY7oZNlkiR0c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531279605474-lu4t3ds99o0c2gcinuvope1cd5em61r7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
