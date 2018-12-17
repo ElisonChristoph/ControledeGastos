@@ -44,4 +44,5 @@ dependencies {
     implementation files('libs/jsoup-1.11.3.jar')
     implementation 'com.google.firebase:firebase-core:16.0.1'
 }
+//firebase
 apply plugin: 'com.google.gms.google-services'
