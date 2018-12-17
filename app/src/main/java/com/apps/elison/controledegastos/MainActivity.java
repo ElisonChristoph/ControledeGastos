@@ -1,5 +1,5 @@
 package com.apps.elison.controledegastos;
-
+//testes
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -320,12 +320,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_salvarID:
 
-                EditText txtNome = findViewById(R.id.tvNome);
-                EditText txtValor = findViewById(R.id.tvValor);
+                EditText txtNome = (EditText) findViewById(R.id.tvNome);
+                EditText txtValor = (EditText) findViewById(R.id.tvValor);
 
 
                // EditText txtCategoria = findViewById(R.id.tvCategoria);
-                EditText txtData = findViewById(R.id.txtData);
+                EditText txtData = (EditText) findViewById(R.id.txtData);
 
                 //pegando os valores
                 String nomegasto = txtNome.getText().toString();
