@@ -96,9 +96,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
-    private Button bAddGasto, bAddCredito, bCadastro, btnCancelar, btnSalvar, btnLimpar,bSalvarCredito;
+    private Button bAddGasto, bAddCredito, bCadastro, btnCancelar, btnSalvar, btnLimpar,btn_cancelarID2,bSalvarCredito,btnLimparCredito;
     private ImageButton bMeses, btnEntrar, bScan, bjaneiro, bfevereiro, bmarco, babril, bmaio, bjunho, bjulho, bagosto, bsetembro, boutubro, bnovembro, bdezembro;
     private FloatingActionButton fab, fabSair;
+    private ConstraintLayout backApp;
     Spinner categoria;
 
     final int[] mesesButtonArray = {
@@ -162,12 +163,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvdata = (EditText) findViewById(R.id.txtData);
         tvvalor = (EditText) findViewById(R.id.tvValor);
 
+        backApp = (ConstraintLayout) findViewById(R.id.backApp);
+
         tvNomeCredito = (EditText) findViewById(R.id.tvNomeCredito);
         nValorCredito =(EditText) findViewById(R.id.nValorCredito);
 
         tvDespesas = (TextView) findViewById(R.id.tvDespesas);
         tvReceitas = (TextView) findViewById(R.id.tvReceitas);
         tvSaldo = (TextView) findViewById(R.id.tvSaldo);
+
+        btn_cancelarID2 = (Button) findViewById(R.id.btn_cancelarID2);
 
         final Activity activity = this;
 
@@ -189,6 +194,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //------------------------------------------------------------------------
         InicializaListeners();
         txtData.setEnabled(false);
+
+        btn_cancelarID2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.addcredito).setVisibility(View.INVISIBLE);
+                findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
+            }
+        });
+
+
 
         ImageButton ibEditarData = (ImageButton) findViewById(R.id.ibEditarData);
         ibEditarData.setOnClickListener(new View.OnClickListener() {
@@ -294,6 +309,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnCancelar.setOnClickListener(this);
         btnLimpar = (Button) findViewById(R.id.btn_limparID);
         btnLimpar.setOnClickListener(this);
+
+        btnLimparCredito = (Button) findViewById(R.id.btn_limparID2);
+        btnLimparCredito.setOnClickListener(this);
+
         btnSalvar = (Button) findViewById(R.id.btn_salvarID);
         btnSalvar.setOnClickListener(this);
         bSalvarCredito = (Button) findViewById(R.id.bSalvarCredito);
@@ -371,12 +390,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
                 break;
             case R.id.btn_limparID:
-
-
+                limpaGasto();
                 break;
+            case R.id.btn_limparID2:
+                limpaCredito();
+                break;
+
+            case R.id.btn_cancelarID2:
+                findViewById(R.id.addcredito).setVisibility(View.INVISIBLE);
+                findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
+                break;
+
             case R.id.ibJaneiro:
                 mesSelected = "01";
-
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[0]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -384,7 +411,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ibFevereiro:
                 mesSelected = "02";
-
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[1]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -392,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ibMarco:
                 mesSelected = "03";
-
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[2]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -400,7 +427,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ibAbril:
                 mesSelected = "04";
-
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[3]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -408,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ibMaio:
                 mesSelected = "05";
-
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[4]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -416,7 +443,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ibJunho:
                 mesSelected = "06";
-
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[5]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -424,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ibJulho:
                 mesSelected = "07";
-
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[6]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -432,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ibAgosto:
                 mesSelected = "08";
-
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[7]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -440,6 +467,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ibSetembro:
                 mesSelected = "09";
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[8]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -447,6 +475,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.ibOutubro:
                 mesSelected = "10";
+                configurarRecycler();
                 bMeses.setImageResource(mesesButtonArray[9]);
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
@@ -565,14 +594,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //----------------------------------------------------------------------------------------------
     @Override
     public void onBackPressed() {
+
         if ((findViewById(R.id.include_main).getVisibility()) == View.VISIBLE){
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
         }
-    }
 
         if((findViewById(R.id.menu_add).getVisibility()) == View.VISIBLE)
             findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
@@ -582,13 +612,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             findViewById(R.id.gasto_add).setVisibility(View.INVISIBLE);
         findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
 
-        if((findViewById(R.id.addcredito).getVisibility()) == View.VISIBLE)
+        if((findViewById(R.id.addcredito).getVisibility()) == View.VISIBLE) {
             findViewById(R.id.addcredito).setVisibility(View.INVISIBLE);
-        findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
+            findViewById(R.id.include_main).setVisibility(View.INVISIBLE);
+            findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
 
+        }
         if((findViewById(R.id.cadastro).getVisibility()) == View.VISIBLE)
             findViewById(R.id.cadastro).setVisibility(View.INVISIBLE);
         findViewById(R.id.menu_add).setVisibility(View.VISIBLE);
+
+        if((findViewById(R.id.meses).getVisibility()) == View.VISIBLE){
+            findViewById(R.id.meses).setVisibility(View.INVISIBLE);
+            findViewById(R.id.menu_add).setVisibility(View.INVISIBLE);
+            findViewById(R.id.include_main).setVisibility(View.VISIBLE);
+        }
+
     }
 
     //LER QRCODE
@@ -635,11 +674,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //----------------------------------------------------------------------------------------------
     private void setupPieChart() {
         List<PieEntry> entries = new ArrayList<>();
+        float entre = 0.0f, alim = 0.0f,trans = 0.0f, gast = 0.0f, total = 0.0f;
+        String cate;
 
-        entries.add(new PieEntry(18.5f, "ENTRETERIMENTO"));
-        entries.add(new PieEntry(26.7f, "ALILMENTAÇÃO"));
-        entries.add(new PieEntry(24.0f, "TRANSPORTE"));
-        entries.add(new PieEntry(30.8f, "GASTOS MENSAIS"));
+        GastoDAO gastos = new GastoDAO(this);
+        List<Gasto> gastosTotais = gastos.retornaMes(mesSelected);
+        for (int i=0;i<gastosTotais.size();i++){
+            cate = gastosTotais.get(i).getCategoria();
+            if (cate.equals("ENTRETERIMENTO")){
+                entre = entre+ Float.parseFloat(gastosTotais.get(i).getValor().replaceAll(",","."));
+                total =total + entre;
+            }else if(cate.equals("ALIMENTAÇÃO")){
+                alim = alim+ Float.parseFloat(gastosTotais.get(i).getValor().replaceAll(",","."));
+                total =total + alim;
+            }
+            else if(cate.equals("TRANSPORTE")){
+                trans = trans + Float.parseFloat(gastosTotais.get(i).getValor().replaceAll(",","."));
+                total =total + trans;
+            }
+            else if(cate.equals("GASTOS MENSAIS")){
+                gast = gast+ Float.parseFloat(gastosTotais.get(i).getValor().replaceAll(",","."));
+                total =total + gast;
+            }
+        }
+
+        entries.add(new PieEntry(entre, "ENTRETERIMENTO"));
+        entries.add(new PieEntry(alim, "ALILMENTAÇÃO"));
+        entries.add(new PieEntry(trans, "TRANSPORTE"));
+        entries.add(new PieEntry(gast, "GASTOS MENSAIS"));
 
         PieDataSet set = new PieDataSet(entries, "Gastos");
         set.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -671,7 +733,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onDateSet(DatePicker view, int year, int month, int day)
         {
             Ano = year;
-            Mes = month;
+            Mes = month+1;
             Dia = day;
             AtualizarData();
             //MensagemData();
@@ -710,6 +772,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void configurarRecycler() {
         DecimalFormat df = new DecimalFormat("0.00");
+        float valorGastos = 0.00f;
+        float valorCredito = 0.00f;
+        float saldo = 0.00f;
         // Configurando o gerenciador de layout para ser uma lista.
         recyclerView = (RecyclerView) findViewById(R.id.main_recyclerViewID);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -718,22 +783,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Adiciona o adapter que irá anexar os objetos à lista.
         GastoDAO dao = new GastoDAO(this);
         adapter = new GastosAdapter(dao.retornaMes(mesSelected));
-        float valorGastos = dao.getValorTotal();
-        float valorCredito = dao.getValorTotalCreditos();
+        valorGastos = dao.getValorTotal();
+        valorCredito = dao.getValorTotalCreditos();
 
         tvDespesas.setText("R$ "+ df.format(valorGastos));
         tvReceitas.setText("R$ "+df.format(valorCredito));
 
-        float saldo = (valorCredito - valorGastos);
+        saldo = (valorCredito - valorGastos);
+        tvSaldo.setText("R$ " + df.format(saldo));
 
+        if(saldo<0) {
 
+        }else if(saldo>0){
 
-        System.out.println();
-
-        tvSaldo.setText("R$ "+df.format(saldo));
+        }
 
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        setupPieChart();
 
         // Adicionar o arrastar para direita para excluir item
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(addArrastarItem());
@@ -797,6 +864,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public ItemTouchHelper.SimpleCallback addArrastarItem() {
+
         ItemTouchHelper.SimpleCallback deslizarItem = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP) {
 
             @Override
@@ -818,6 +886,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 int numItens = dao.excluirItem(adapter.getDbID(deleteViewID));
                                 if (numItens > 0) {
                                     adapter.removerGasto(deleteViewID);
+
                                     Snackbar.make(main_layout, "Excluiu!", Snackbar.LENGTH_LONG)
                                             .setAction("Action", null).show();
                                 } else {
@@ -838,7 +907,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .show();
             }
         };
+       // configurarRecycler();
         return deslizarItem;
+    }
+
+    private void limpaGasto(){
+        tvnome.setText("");
+        tvvalor.setText("");
+    }
+
+    private void limpaCredito(){
+        tvNomeCredito.setText("");
+        nValorCredito.setText("");
     }
 
     private void exportarLista() {

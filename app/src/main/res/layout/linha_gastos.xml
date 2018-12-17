@@ -78,13 +78,14 @@
         android:id="@+id/ivLogo"
         android:layout_width="85dp"
         android:layout_height="77dp"
-        android:background="?attr/actionBarDivider"
+        android:background="@color/zxing_transparent"
         android:contentDescription="TODO"
         android:scaleType="centerCrop"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvCategoria"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:srcCompat="@drawable/ic_bank" />
 
 </android.support.constraint.ConstraintLayout>
