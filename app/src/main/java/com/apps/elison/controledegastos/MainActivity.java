@@ -25,9 +25,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int Hora;
     private int Minuto;
 
+    private String array_spinner[];
+
     private TextView seu_nome;
     private TextView seu_email;
     private SharedPreferences pref;
@@ -89,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button bAddGasto, bAddCredito, bCadastro, btnCancelar, btnSalvar, btnLimpar;
     private ImageButton bMeses, btnEntrar, bScan, bjaneiro, bfevereiro, bmarco, babril, bmaio, bjunho, bjulho, bagosto, bsetembro, boutubro, bnovembro, bdezembro;
     private FloatingActionButton fab, fabSair;
+    Spinner categoria;
 
     final int[] mesesButtonArray = {
             R.drawable.dezembro
@@ -107,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText tvdata;
     EditText tvvalor;
 
+    private String mesSelected;
+
     private ConstraintLayout main_layout;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -115,6 +122,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         main_layout = findViewById(R.id.main_layoutID);
+
+        array_spinner=new String[4];
+        array_spinner[0]="ENTRETERIMENTO";
+        array_spinner[1]="ALIMENTAÇÃO";
+        array_spinner[2]="TRANSPORTE";
+        array_spinner[3]="GASTOS MENSAIS";
+        categoria = (Spinner) findViewById(R.id.sCategoria);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
+                this,R.layout.spinner_item,array_spinner);
+        spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item);
+        categoria.setAdapter(spinnerArrayAdapter);
 
         //Leitor do QRCODE
         //---------------------------------------------------------------------------
@@ -164,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AtualizarData();
 
         // data/hora atual
-        int mes = (cal.get(Calendar.MONTH)) ;
+        int mes = (cal.get(Calendar.MONTH));
 
 
         mesList.add(new Mes(1,"Janeiro", 0, 0,0,R.drawable.ic_dezembro));
@@ -330,22 +348,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.ibNovembro:
 
                 bMeses.setImageResource(mesesButtonArray[11]);
+                mesSelected = "11";
                 findViewById(R.id.meses).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_main).setVisibility(View.VISIBLE);
 
                 break;
             case R.id.btn_salvarID:
 
-                TextView txtNome = findViewById(R.id.tvNome);
-                TextView txtValor = findViewById(R.id.tvValor);
-                TextView txtCategoria = findViewById(R.id.tvCategoria);
-                TextView txtData = findViewById(R.id.txtData);
-
                 //pegando os valores
-                String nomegasto = txtNome.getText().toString();
-                String valorgasto = txtValor.getText().toString();
+                String nomegasto = tvnome.getText().toString();
+                String valorgasto = tvvalor.getText().toString();
                 String datagasto = txtData.getText().toString();
-                String categoriagasto = txtCategoria.getText().toString();
+                String categoriagasto = (String)categoria.getSelectedItem();
 
                 if (nomegasto.equals("")) {
                     Snackbar.make(v, "Preencha o Nome!", Snackbar.LENGTH_SHORT).show();
@@ -365,9 +379,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     long salvoID = dao.salvarItem(gasto);
                     if (salvoID != -1) {
                         //limpa os campos
-                        txtNome.setText("");
-                        txtValor.setText("");
-                        txtCategoria.setText("");
+                        tvnome.setText("");
+                        tvvalor.setText("");
+
 
                         //adiciona no recyclerView
                         gasto.setID(salvoID);
@@ -429,10 +443,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 BuscaNota buscaNota = new BuscaNota(cod[1]);
 
                 qrdata = buscaNota.getDataEmissao(buscaNota.getWebPage());
+
+                String date[];
+                date = qrdata.split("/");
+                Dia = Integer.parseInt(date[0]);
+                Mes = Integer.parseInt(date[1]);
+                Ano = Integer.parseInt(date[2]);
+
+                AtualizarData();
+
                 qrnome = buscaNota.getEmissor(buscaNota.getWebPage());
                 qrvalor = buscaNota.getValor(buscaNota.getWebPage());
 
-                //tvdata.setText(qrdata);
+
                 tvnome.setText(qrnome);
                 tvvalor.setText(qrvalor);
 
@@ -501,7 +524,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static void AtualizarData()
     {
-        txtData.setText(new StringBuilder().append(Dia).append("/").append(Mes + 1).append("/").append(Ano).append(" "));
+        if (Dia<10 && Mes <10){
+            txtData.setText(new StringBuilder().append("0").append(Dia).append("/").append("0").append(Mes).append("/").append(Ano).append(" "));
+        }else if (Dia<10 && Mes >=10){
+            txtData.setText(new StringBuilder().append("0").append(Dia).append("/").append(Mes).append("/").append(Ano).append(" "));
+        }else if (Dia>=10 && Mes <10){
+            txtData.setText(new StringBuilder().append(Dia).append("/").append("0").append(Mes).append("/").append(Ano).append(" "));
+        } else {
+            txtData.setText(new StringBuilder().append(Dia).append("/").append(Mes).append("/").append(Ano).append(" "));
+        }
     }
 
 //    private static void MensagemData()

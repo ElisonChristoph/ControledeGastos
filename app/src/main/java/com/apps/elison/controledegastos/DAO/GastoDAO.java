@@ -47,9 +47,29 @@ public class GastoDAO {
         return gastos;
     }
 
+    public List<Gasto> retornaMes(String mes){
+        List<Gasto> gastos = new ArrayList<>();
+        Cursor cursor = gw.getDatabase().rawQuery("SELECT * FROM Gastos", null);
+        while(cursor.moveToNext()){
+            String[] mesOb = cursor.getString(cursor.getColumnIndex("Data")).split("/");
+            if( mesOb[2]== mes) {
+                int id = cursor.getInt(cursor.getColumnIndex("ID"));
+                String nome = cursor.getString(cursor.getColumnIndex("Nome"));
+                String valor = cursor.getString(cursor.getColumnIndex("Valor"));
+                String data = cursor.getString(cursor.getColumnIndex("Data"));
+                String categoria = cursor.getString(cursor.getColumnIndex("Categoria"));
+                gastos.add(new Gasto(id, nome, valor, data, categoria));
+            }
+        }
+        cursor.close();
+        return gastos;
+    }
+
     public void recriarTabela(){
         gw.getDatabase().execSQL("DROP TABLE Gastos");
         gw.getDatabase().execSQL("CREATE TABLE Gastos (ID INTEGER PRIMARY KEY AUTOINCREMENT, Nome TEXT NOT NULL, Valor TEXT, Data TEXT, Categoria TEXT)");
     }
+
+
 
 }
